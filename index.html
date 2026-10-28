@@ -1,0 +1,1607 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ⅰ. 측정 (학생용)</title>
+<style>
+:root{
+  --navy:#0F3057; --teal:#00879E; --gold:#FFC145; --ink:#1d2733; --muted:#5b6876;
+  --bg:#e9eef3; --paper:#ffffff; --line:#d6dee6; --teal-soft:#e2f3f5; --gold-soft:#fff4d6;
+  --navy-soft:#e6ecf3; --red:#c8423b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;overflow:hidden}
+#viewport{position:absolute;left:0;right:0;top:0;bottom:56px;display:flex;align-items:center;justify-content:center}
+body.teacher #viewport{bottom:206px}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center;flex:none}
+.page{position:absolute;inset:0;background:var(--paper);border-radius:14px;box-shadow:0 6px 28px rgba(15,48,87,.14);
+  padding:38px 54px 30px;display:none;flex-direction:column;overflow:hidden}
+.page.on{display:flex}
+.kicker{font-size:15px;font-weight:700;color:var(--teal);letter-spacing:.5px;margin-bottom:6px}
+.kicker .pg{color:var(--muted);font-weight:400;margin-left:10px}
+h2{margin:0 0 18px;font-size:32px;color:var(--navy);line-height:1.25}
+h3{margin:0 0 8px;font-size:20px;color:var(--navy)}
+p{margin:0 0 10px;font-size:18px;line-height:1.6}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;flex:1;min-height:0;margin-bottom:12px}
+.cols.c64{grid-template-columns:1.25fr 1fr}
+.cols.c46{grid-template-columns:1fr 1.25fr}
+.cols.c3{grid-template-columns:1fr 1fr 1fr}
+.col{display:flex;flex-direction:column;gap:12px;min-height:0}
+.card{background:var(--navy-soft);border-radius:10px;padding:14px 18px}
+.card.t{background:var(--teal-soft)}
+.card p:last-child{margin-bottom:0}
+.analogy{background:var(--gold-soft);border-left:6px solid var(--gold);border-radius:8px;padding:12px 16px;font-size:17px;line-height:1.6}
+.analogy b.lab,.supp b.lab{display:inline-block;font-size:14px;background:var(--gold);color:var(--navy);border-radius:4px;padding:1px 8px;margin-right:8px}
+.supp{background:var(--teal-soft);border-radius:8px;padding:10px 16px;font-size:15.5px;line-height:1.55}
+.supp b.lab{background:var(--teal);color:#fff}
+.oneline{margin-top:auto;background:var(--navy);color:#fff;border-radius:8px;padding:11px 18px;font-size:18px;line-height:1.5}
+.oneline b{color:var(--gold);margin-right:10px}
+ul.tight{margin:0;padding-left:22px;font-size:17.5px;line-height:1.6}
+ul.tight li{margin-bottom:3px}
+table.t{border-collapse:collapse;width:100%;font-size:16px;line-height:1.45}
+table.t th{background:var(--navy);color:#fff;font-weight:700;padding:7px 9px;text-align:center}
+table.t td{border-bottom:1px solid var(--line);padding:6px 9px;vertical-align:middle}
+table.t tr:nth-child(even) td{background:#f6f8fb}
+table.t td.c{text-align:center}
+.tag{display:inline-block;font-size:13px;font-weight:700;border-radius:4px;padding:1px 7px;color:#fff;background:var(--teal)}
+.tag.n{background:var(--navy)} .tag.g{background:var(--gold);color:var(--navy)} .tag.r{background:var(--red)}
+.formula{font-size:26px;font-weight:700;color:var(--navy);text-align:center;background:#fff;border:2px solid var(--teal);border-radius:10px;padding:8px}
+.wbox{background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:0}
+.wbox svg{width:100%;height:auto;display:block}
+.ctrl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px;color:var(--muted)}
+.ctrl button{font:inherit;font-size:14.5px;border:1px solid var(--teal);background:#fff;color:var(--teal);border-radius:6px;padding:4px 11px;cursor:pointer}
+.ctrl button.on{background:var(--teal);color:#fff}
+.ctrl .sp{width:10px}
+.readout{font-size:16px;color:var(--navy);font-weight:700;min-height:22px}
+.flow{display:flex;flex-direction:column;gap:6px}
+.flow .st{background:#fff;border:1.5px solid var(--teal);border-radius:7px;padding:6px 10px;font-size:15.5px;text-align:center}
+.flow .ar{text-align:center;color:var(--teal);font-size:15px;line-height:1}
+.memo{display:none}
+.tonly{display:none}
+body.teacher .tonly{display:block}
+body.teacher .ans{display:block!important}
+.cover{justify-content:center;background:linear-gradient(135deg,var(--navy) 0%,#164a7a 60%,var(--teal) 100%);color:#fff}
+.cover h1{font-size:52px;margin:10px 0 16px;line-height:1.2}
+.cover .sub{font-size:22px;opacity:.9}
+.chips{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap}
+.chips span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);border-radius:30px;padding:9px 18px;font-size:18px}
+.chips span b{color:var(--gold);margin-right:6px}
+.quiz{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;font-size:16.5px}
+.q{border-bottom:1px dashed var(--line);padding:4px 0 7px;line-height:1.5}
+.q button{font:inherit;font-size:13px;border:1px solid var(--teal);background:#fff;color:var(--teal);border-radius:5px;padding:1px 8px;margin-left:6px;cursor:pointer}
+.ans{display:none;color:var(--red);font-weight:700;margin-top:2px}
+.sheet{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}
+.sheet div{border:2px dashed var(--teal);border-radius:10px;min-height:120px;padding:10px;font-size:15px;color:var(--muted);position:relative}
+.sheet div::after{content:'→';position:absolute;right:-17px;top:42%;color:var(--teal);font-weight:700}
+.sheet div:last-child::after{content:''}
+#nav{position:fixed;left:0;right:0;bottom:0;height:56px;background:var(--navy);display:flex;align-items:center;gap:10px;padding:0 16px;color:#fff;font-size:15px}
+#nav button,#nav select{font:inherit;font-size:15px;border:0;border-radius:6px;padding:7px 14px;cursor:pointer}
+#nav button{background:rgba(255,255,255,.14);color:#fff}
+#nav button:hover{background:rgba(255,255,255,.26)}
+#nav select{background:#fff;color:var(--navy);max-width:340px}
+#nav #mode{margin-left:auto;background:var(--gold);color:var(--navy);font-weight:700}
+#count{min-width:70px;text-align:center}
+#memoPanel{display:none;position:fixed;left:0;right:0;bottom:56px;height:150px;background:#fffbea;border-top:3px solid var(--gold);
+  padding:10px 22px;overflow:auto;font-size:15.5px;line-height:1.6;color:var(--ink)}
+#memoPanel b.h{color:var(--navy)}
+body.teacher #memoPanel{display:block}
+#memoPanel ul{margin:2px 0;padding-left:20px}
+svg text{font-family:'Malgun Gothic','맑은 고딕',sans-serif}
+.supp b.lab.ex{background:var(--red)}
+.mini{font-size:15.5px;color:var(--muted);line-height:1.5;margin:0}
+.big{font-size:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.box{border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff;font-size:15.5px;line-height:1.5}
+.box h4{margin:0 0 4px;font-size:16.5px;color:var(--navy)}
+.box.hl{border-color:var(--teal);background:var(--teal-soft)}
+.box.gd{border-color:var(--gold);background:var(--gold-soft)}
+.ctrl input[type=range]{width:180px;accent-color:#00879E}
+.sec-cover{justify-content:center;background:linear-gradient(135deg,#164a7a 0%,var(--teal) 100%);color:#fff}
+.sec-cover h1{font-size:48px;margin:6px 0 14px}
+.sec-cover .sub{font-size:21px;opacity:.92;line-height:1.6}
+.sec-cover .num{font-size:90px;font-weight:800;color:var(--gold);line-height:1}
+.sortq{display:flex;flex-wrap:wrap;gap:8px}
+.sortq button{font:inherit;font-size:15.5px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:20px;padding:5px 14px;cursor:pointer}
+.sortq button.phy{background:var(--teal);border-color:var(--teal);color:#fff}
+.sortq button.chm{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.bits{display:flex;gap:8px;align-items:center}
+.bits button{font:inherit;font-size:20px;font-weight:700;width:50px;height:50px;border-radius:8px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.bits button.on{background:var(--navy);color:var(--gold)}
+.lamp{display:inline-block;width:16px;height:16px;border-radius:50%;background:#cfd6dd;border:1.5px solid var(--navy);vertical-align:middle;margin:0 4px}
+.lamp.on{background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.tag{white-space:nowrap}
+.bigmini .mini{font-size:17px;line-height:1.6}
+
+
+/* 컴퓨터응용가공산업기사 수업자료 추가 스타일 */
+.lesson{display:inline-block;background:var(--gold);color:var(--navy);font-weight:800;border-radius:6px;padding:1px 9px;margin-right:8px;font-size:14px}
+.gq{display:inline-block;font-size:12.5px;font-weight:700;border-radius:4px;padding:0 6px;background:var(--navy-soft);color:var(--navy);border:1px solid var(--navy);margin-left:4px;vertical-align:1px}
+.chk{color:var(--red);font-weight:800}
+.word{background:#fff;border:1.5px dashed var(--teal);border-radius:8px;padding:8px 12px;font-size:15px;line-height:1.5}
+.word b{color:var(--teal)}
+.sortq button.c1{background:var(--teal);border-color:var(--teal);color:#fff}
+.sortq button.c2{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.sortq button.c3{background:var(--navy);border-color:var(--navy);color:#fff}
+.sortq button.bad{background:#fbe3e1;border-color:var(--red);color:var(--red)}
+.legend{display:flex;gap:14px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.ox{display:flex;gap:6px;margin-top:4px}
+.ox button{font:inherit;font-size:14px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:6px;padding:2px 12px;cursor:pointer}
+.ox button.right{background:var(--teal);border-color:var(--teal);color:#fff}
+.ox button.wrong{background:#fbe3e1;border-color:var(--red);color:var(--red)}
+.q .fb{font-size:14px;color:var(--muted);margin-top:2px;min-height:18px}
+.drill{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:16px}
+.drill input{font:inherit;font-size:16px;width:110px;padding:4px 8px;border:1.5px solid var(--teal);border-radius:6px}
+.drill button{font:inherit;font-size:14.5px;border:1px solid var(--teal);background:var(--teal);color:#fff;border-radius:6px;padding:5px 12px;cursor:pointer}
+.drill button.sub{background:#fff;color:var(--teal)}
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:6px}
+.steps div{counter-increment:s;background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px 6px 40px;position:relative;font-size:15.5px;line-height:1.5}
+.steps div::before{content:counter(s);position:absolute;left:9px;top:6px;width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:22px}
+.steps div.hl{border-color:var(--gold);background:var(--gold-soft)}
+body.teacher span.tonly{display:inline-block}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#00879E"/></marker>
+<marker id="ahn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0F3057"/></marker>
+<marker id="ahs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10 0L0 5L10 10z" fill="#0F3057"/></marker>
+<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#e6ecf3"/><line x1="0" y1="0" x2="0" y2="8" stroke="#0F3057" stroke-width="2"/></pattern>
+</defs></svg>
+
+<div id="viewport"><div id="stage">
+<!-- 표지 -->
+<section class="page cover" data-title="표지">
+  <div class="kicker" style="color:var(--gold)">과정평가형 컴퓨터응용가공산업기사 · 외부평가 대비 · 2027 교재 Ⅰ. 측정 (1~9쪽)</div>
+  <h1>Ⅰ. 측정<br>정확하게 재고, 바르게 관리한다</h1>
+  <div class="sub">능력단위: 정밀측정(1502010505) · 측정기 유지관리(1502010508)</div>
+  <div class="chips">
+    <span><b>1</b>측정의 종류와 방식</span><span><b>2</b>오차, 정확도와 정밀도</span><span><b>3</b>버니어캘리퍼스</span><span><b>4</b>마이크로미터</span><span><b>5</b>다이얼게이지와 게이지류</span><span><b>6</b>측정기 관리와 교정</span>
+  </div>
+</section>
+
+<!-- 학습 흐름 -->
+<section class="page" data-title="Ⅰ단원 학습 흐름">
+  <div class="kicker">Ⅰ. 측정 <span class="pg">들어가기</span></div>
+  <h2>왜 '측정'부터 배우는가</h2>
+  <div class="cols c64">
+    <div class="col">
+      <table class="t">
+        <tr><th>차시</th><th>주제</th><th>핵심 질문</th><th>교재</th></tr>
+        <tr><td class="c"><span class="lesson">1</span></td><td>측정의 종류와 방식</td><td>무엇을, 어떤 방법으로 재는가?</td><td class="c">1쪽</td></tr>
+        <tr><td class="c"><span class="lesson">2</span></td><td>오차, 정확도와 정밀도</td><td>측정값은 왜 참값과 다른가?</td><td class="c">3·5쪽</td></tr>
+        <tr><td class="c"><span class="lesson">3</span></td><td>버니어캘리퍼스</td><td>0.05 mm를 어떻게 읽는가?</td><td class="c">2·4쪽</td></tr>
+        <tr><td class="c"><span class="lesson">4</span></td><td>마이크로미터</td><td>나사로 어떻게 0.01 mm를 재는가?</td><td class="c">3~5쪽</td></tr>
+        <tr><td class="c"><span class="lesson">5</span></td><td>다이얼게이지와 게이지류</td><td>눈금 없이도 합격을 판정할 수 있는가?</td><td class="c">3·5쪽</td></tr>
+        <tr><td class="c"><span class="lesson">6</span></td><td>측정기 관리와 교정</td><td>측정기는 왜 주기적으로 검사받는가?</td><td class="c">6~7쪽</td></tr>
+      </table>
+      <div class="card t"><p><b>한 줄 요약</b> — 가공한 부품이 도면대로 만들어졌는지는 <b>측정</b>으로만 확인할 수 있다. 측정이 틀리면 잘 깎은 부품도 불량이 되고, 불량 부품도 합격이 된다.</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox"><svg viewBox="0 0 460 300">
+        <g font-size="15" text-anchor="middle" font-weight="700">
+          <rect x="20" y="20" width="120" height="56" rx="10" fill="#fff4d6" stroke="#FFC145" stroke-width="2"/><text x="80" y="54" fill="#0F3057">도면 검토</text>
+          <rect x="170" y="20" width="120" height="56" rx="10" fill="#e6ecf3" stroke="#0F3057" stroke-width="2"/><text x="230" y="54" fill="#0F3057">가공(CNC)</text>
+          <rect x="320" y="20" width="120" height="56" rx="10" fill="#00879E"/><text x="380" y="54" fill="#fff">측정</text>
+          <rect x="320" y="200" width="120" height="56" rx="10" fill="#0F3057"/><text x="380" y="234" fill="#FFC145">합격 · 불합격</text>
+          <rect x="170" y="200" width="120" height="56" rx="10" fill="#e6ecf3" stroke="#0F3057" stroke-width="2"/><text x="230" y="234" fill="#0F3057">보정 · 재가공</text>
+        </g>
+        <g stroke="#00879E" stroke-width="3" marker-end="url(#ah)"><line x1="142" y1="48" x2="166" y2="48"/><line x1="292" y1="48" x2="316" y2="48"/><line x1="380" y1="78" x2="380" y2="196"/><line x1="318" y1="228" x2="294" y2="228"/><line x1="230" y1="198" x2="230" y2="80"/></g>
+        <text x="390" y="140" font-size="13" fill="#5b6876">판정</text>
+        <text x="150" y="140" font-size="13" fill="#5b6876">공구 보정값 수정</text>
+        <text x="230" y="290" text-anchor="middle" font-size="13" fill="#5b6876">측정 결과는 다음 가공의 보정값이 된다</text>
+      </svg></div>
+      <div class="analogy"><b class="lab">비유</b>요리사가 간을 보지 않고 음식을 내보낼 수 없듯이, 기계 가공도 측정 없이 제품을 내보낼 수 없다. 측정은 가공의 '맛보기'이다.</div>
+    </div>
+  </div>
+  <div class="oneline"><b>목표</b>측정 방법과 측정기를 바르게 고르고, 값을 정확히 읽으며, 측정기를 관리·교정할 수 있다.</div>
+</section>
+
+<!-- 1차시 표지 -->
+<section class="page sec-cover" data-title="1차시 · 측정의 종류와 방식">
+  <div class="num">1</div>
+  <h1>측정의 종류와 방식</h1>
+  <div class="sub">측정 대상물의 특성 / 직접·간접·비교 측정<br>편위법·영위법·보상법·치환법 / 측정용 보조 기구</div>
+</section>
+
+<!-- 측정이란 / 측정 종류 -->
+<section class="page" data-title="측정의 종류 · 직접·간접·비교">
+  <div class="kicker"><span class="lesson">1차시</span>측정 방법 결정하기 <span class="pg">교재 1쪽</span></div>
+  <h2>무엇을 기준으로 값을 얻는가 — 측정의 종류 3가지</h2>
+  <div class="cols c3">
+    <div class="box hl"><h4>① 직접 측정</h4>
+      <svg viewBox="0 0 260 120" style="width:100%">
+        <rect x="20" y="62" width="220" height="22" rx="3" fill="#e6ecf3" stroke="#0F3057" stroke-width="1.5"/>
+        <g stroke="#0F3057" stroke-width="1.2">
+          <line x1="30" y1="62" x2="30" y2="74"/><line x1="70" y1="62" x2="70" y2="70"/><line x1="110" y1="62" x2="110" y2="74"/><line x1="150" y1="62" x2="150" y2="70"/><line x1="190" y1="62" x2="190" y2="74"/><line x1="230" y1="62" x2="230" y2="70"/></g>
+        <rect x="30" y="28" width="160" height="30" rx="4" fill="#00879E"/><text x="110" y="48" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">공작물</text>
+        <text x="130" y="108" text-anchor="middle" font-size="12" fill="#5b6876">눈금을 바로 읽는다</text></svg>
+      <p class="mini">측정기를 제품에 <b>직접 접촉</b>하여 <b>눈금을 직접 읽어</b> 측정값을 얻는다.</p>
+      <p class="mini">예: 버니어캘리퍼스, 마이크로미터, 자</p></div>
+    <div class="box gd"><h4>② 간접 측정</h4>
+      <svg viewBox="0 0 260 120" style="width:100%">
+        <circle cx="70" cy="60" r="34" fill="#e2f3f5" stroke="#00879E" stroke-width="2"/><line x1="36" y1="60" x2="104" y2="60" stroke="#0F3057" stroke-width="2" marker-end="url(#ahn)"/><text x="70" y="52" text-anchor="middle" font-size="12" fill="#0F3057">지름 D</text>
+        <text x="150" y="50" font-size="15" fill="#0F3057" font-weight="700">둘레</text><text x="150" y="72" font-size="15" fill="#c8423b" font-weight="700">= π × D</text>
+        <text x="130" y="108" text-anchor="middle" font-size="12" fill="#5b6876">재고 → 계산한다</text></svg>
+      <p class="mini">측정하려는 양과 <b>일정한 관계가 있는 다른 양</b>을 측정한 뒤 <b>계산</b>하여 값을 정한다.</p>
+      <p class="mini">예: 사인바로 각도 구하기, 삼침법으로 나사 유효지름 구하기</p></div>
+    <div class="box"><h4>③ 비교 측정</h4>
+      <svg viewBox="0 0 260 120" style="width:100%">
+        <rect x="30" y="60" width="70" height="40" fill="#FFC145" stroke="#0F3057"/><text x="65" y="85" text-anchor="middle" font-size="12" fill="#0F3057">기준(블록)</text>
+        <rect x="160" y="54" width="70" height="46" fill="#00879E"/><text x="195" y="82" text-anchor="middle" font-size="12" fill="#fff">제품</text>
+        <circle cx="130" cy="28" r="20" fill="#fff" stroke="#0F3057" stroke-width="2"/><line x1="130" y1="28" x2="142" y2="18" stroke="#c8423b" stroke-width="2.5"/><text x="130" y="112" text-anchor="middle" font-size="12" fill="#5b6876">차이만 읽는다(+0.06)</text></svg>
+      <p class="mini">기준이 되는 <b>표준</b>(게이지 블록 등)과 비교하여 그 <b>차이 값</b>으로 측정값을 얻는다.</p>
+      <p class="mini">예: 다이얼게이지, 미니미터, 공기 마이크로미터</p></div>
+  </div>
+  <div class="analogy" style="margin-top:12px"><b class="lab">비유</b>친구의 키를 알고 싶을 때, 줄자로 바로 재면 <b>직접 측정</b>, 그림자 길이를 재서 계산하면 <b>간접 측정</b>, 키가 180 cm인 친구와 나란히 세워 "3 cm 작다"를 보면 <b>비교 측정</b>이다.</div>
+  <div class="oneline"><b>구별법</b>눈금을 바로 읽으면 직접, 계산이 끼면 간접, 기준과의 '차이'를 읽으면 비교</div>
+</section>
+
+<!-- 분류 활동 -->
+<section class="page" data-title="활동 · 측정의 종류 분류하기">
+  <div class="kicker"><span class="lesson">1차시</span>확인 활동 <span class="pg">교재 1쪽</span></div>
+  <h2>이 측정은 직접·간접·비교 중 무엇인가</h2>
+  <div class="cols c64">
+    <div class="col">
+      <div class="ctrl" style="font-size:16px">먼저 종류를 고르고 → 아래 상황을 누른다:
+        <span class="sp"></span><button data-cls="1" class="on">직접 측정</button><button data-cls="2">간접 측정</button><button data-cls="3">비교 측정</button></div>
+      <div class="sortq" id="sort1" style="margin-top:6px">
+        <button data-c="1">버니어캘리퍼스로 축 지름을 잰다</button>
+        <button data-c="2">사인바와 블록게이지로 경사각을 구한다</button>
+        <button data-c="3">다이얼게이지를 블록게이지로 0에 맞춘 뒤 제품 높이 차이를 읽는다</button>
+        <button data-c="1">마이크로미터로 판 두께를 잰다</button>
+        <button data-c="2">삼침과 마이크로미터로 나사 유효지름을 계산한다</button>
+        <button data-c="1">강철자로 소재 길이를 잰다</button>
+        <button data-c="3">기준 게이지와 비교하여 공기 마이크로미터로 구멍 지름 차이를 읽는다</button>
+        <button data-c="2">원의 둘레를 재서 지름을 계산한다</button>
+      </div>
+      <div class="ctrl" style="margin-top:8px"><button id="sort1-chk">채점하기</button><button id="sort1-rst">다시 하기</button><span class="readout" id="sort1-out" style="margin-left:10px"></span></div>
+      <div class="legend"><span><i style="background:#00879E"></i>직접</span><span><i style="background:#FFC145"></i>간접</span><span><i style="background:#0F3057"></i>비교</span><span><i style="background:#fbe3e1;border:1px solid #c8423b"></i>틀림</span></div>
+    </div>
+    <div class="col">
+      <div class="card"><h3>측정 대상물의 특성 먼저 보기</h3>
+        <p class="mini">측정 방법을 정하기 전에 <b>제품의 형상·수량·재질</b>과 <b>측정기의 성능</b>을 검토한다.</p>
+        <ul class="tight" style="font-size:15.5px">
+          <li>형상: 외경인가, 구멍인가, 깊이인가</li>
+          <li>수량: 1개를 정밀하게? 1,000개를 빠르게?</li>
+          <li>재질: 무른 알루미늄은 측정력에 눌릴 수 있다</li>
+        </ul></div>
+      <div class="supp"><b class="lab">생각</b>같은 지름이라도 시제품 1개는 마이크로미터로 정밀하게, 양산품 1,000개는 한계게이지(5차시)로 빠르게 판정한다. <b>수량</b>이 측정 방법을 바꾼다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 측정 방식 4가지 -->
+<section class="page" data-title="측정 방식 · 편위법·영위법 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">1차시</span>측정 방식 <span class="pg">교재 1쪽</span></div>
+  <h2>바늘이 움직이는가, 균형을 맞추는가 — 측정 방식 4가지</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="box hl"><h4>① 편위법</h4><p class="mini">측정하려는 양에 의해 지침에 <b>편위(치우침)</b>를 일으켜 <b>눈금과 비교</b>한다. 조작이 간단하여 <b>가장 널리 사용</b>한다. 예: 다이얼게이지, 스프링 저울</p></div>
+      <div class="box gd"><h4>② 영위법</h4><p class="mini">같은 종류의 <b>기준량</b>을 준비하여 측정량과 <b>균형</b>을 맞추고, 그 기준량으로 값을 구한다. 지침을 <b>0</b>에 맞추므로 <b>정밀도가 높다</b>. 예: 천칭, 휘트스톤 브리지</p></div>
+      <div class="box"><h4>③ 보상법</h4><p class="mini">측정량에서 <b>기준량을 뺀 나머지</b>만 편위법으로 잰다(오프셋 후 측정). 차이만 재므로 <b>상세한 값</b>을 얻는다.</p></div>
+      <div class="box"><h4>④ 치환법</h4><p class="mini">지시량을 먼저 얻고, <b>같은 측정기</b>로 그 크기와 같은 기준량을 얻어 측정값을 알아낸다(측정기 자체 오차가 상쇄됨).</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-meth" viewBox="0 0 560 300"></svg>
+        <div class="ctrl">방식 <button data-mm="dev" class="on">편위법(용수철 저울)</button><button data-mm="zero">영위법(천칭)</button><button data-mm="comp">보상법</button>
+          <span class="sp"></span>물체 무게 <input type="range" id="meth-m" min="100" max="900" step="10" value="430"></div>
+        <div class="readout" id="meth-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>몸무게를 체중계에 올라 바늘로 읽으면 <b>편위법</b>, 시장 양팔저울에 추를 올려 양쪽을 평평하게 맞추면 <b>영위법</b>이다. 영위법은 번거롭지만 '0을 맞추는' 것이라 더 정확하다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 보조 기구 -->
+<section class="page" data-title="측정용 보조 기구">
+  <div class="kicker"><span class="lesson">1차시</span>측정용 보조 기구 <span class="pg">교재 1쪽 · 5쪽</span></div>
+  <h2>측정기를 잡아 주는 것, 공작물을 받쳐 주는 것</h2>
+  <div class="cols">
+    <div class="col">
+      <h3>측정기 고정용 보조 기구</h3>
+      <div class="grid3">
+        <div class="box"><h4>마이크로미터 스탠드</h4>
+          <svg viewBox="0 0 160 90" style="width:100%"><rect x="20" y="70" width="120" height="12" fill="#0F3057"/><rect x="40" y="20" width="14" height="50" fill="#5b6876"/><path d="M54 30 h50 a14 14 0 0 1 0 28 h-50" fill="none" stroke="#00879E" stroke-width="7"/></svg>
+          <p class="mini">마이크로미터를 고정하여 핀·작은 측정물을 잰다. 영점 조정, 평면도·평행도 교정 시 사용</p></div>
+        <div class="box hl"><h4>마그네틱 스탠드</h4>
+          <svg viewBox="0 0 160 90" style="width:100%"><rect x="20" y="60" width="50" height="24" fill="#c8423b"/><text x="45" y="77" text-anchor="middle" font-size="11" fill="#fff">자석</text><line x1="45" y1="60" x2="45" y2="20" stroke="#5b6876" stroke-width="5"/><line x1="45" y1="22" x2="110" y2="22" stroke="#5b6876" stroke-width="5"/><circle cx="120" cy="40" r="16" fill="#fff" stroke="#0F3057" stroke-width="2"/><line x1="120" y1="56" x2="120" y2="72" stroke="#0F3057" stroke-width="2"/></svg>
+          <p class="mini"><b>다이얼게이지·테스트 인디케이터</b>를 부착하여 직각도·진원도·평행도 측정</p></div>
+        <div class="box"><h4>고정용 스탠드</h4>
+          <svg viewBox="0 0 160 90" style="width:100%"><rect x="15" y="70" width="130" height="12" fill="#0F3057"/><rect x="70" y="15" width="12" height="55" fill="#5b6876"/><rect x="60" y="30" width="40" height="10" fill="#00879E"/></svg>
+          <p class="mini">정반 형태에 따라 종류가 다양하며, 피측정물 용도에 맞게 조정하여 사용</p></div>
+      </div>
+    </div>
+    <div class="col">
+      <h3>피측정물 고정용 보조 기구</h3>
+      <div class="grid2">
+        <div class="box"><h4>편심 측정기</h4><p class="mini">다이얼게이지를 붙여 <b>편심량·동심도</b> 측정에 가장 많이 사용(5차시)</p></div>
+        <div class="box"><h4>석정반</h4><p class="mini">피측정물을 올려놓는 기준 평면. <b>가장 널리 사용</b></p></div>
+        <div class="box"><h4>V-블록</h4><p class="mini"><b>원통형</b> 제품을 설치·지지</p></div>
+        <div class="box"><h4>중심 지지대(벤치 센터)</h4><p class="mini">양 센터로 나사 제품을 지지. 나사는 <b>리드각만큼</b> 기울여야 상이 뚜렷함. 센터 간 거리 150 mm가 많이 쓰임</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="oneline"><b>구별</b>측정기를 붙드는 것(스탠드 3종) ↔ 공작물을 받치는 것(편심 측정기·석정반·V블록·중심 지지대)</div>
+</section>
+
+<!-- 1차시 확인 -->
+<section class="page" data-title="1차시 확인 문제">
+  <div class="kicker"><span class="lesson">1차시</span>확인 문제 <span class="pg">기출 연계</span></div>
+  <h2>1차시 확인 문제</h2>
+  <div class="quiz">
+    <div class="q">1. 측정하려는 양의 크기에 의해 측정기의 지침에 편위를 일으켜 편위 눈금과 비교하는 측정법은?<br>① 편위법 ② 영위법 ③ 보상법 ④ 치환법
+      <div class="ox" data-a="1"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 측정량과 같은 종류의 기준량을 준비해 균형을 맞추어 측정값을 구하며, 정밀도가 높은 방식은?<br>① 편위법 ② 영위법 ③ 보상법 ④ 치환법
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 다른 종류의 양을 각각 측정한 뒤 계산하여 측정량을 결정하는 방법을 '비교 측정'이라 한다.
+      <div class="ox" data-a="2"><button>O</button><button>X</button></div><div class="fb"></div></div>
+    <div class="q">4. 다이얼게이지를 부착하여 직각도·진원도·평행도 측정에 널리 쓰는 측정기 고정용 보조 기구는?<br>① V-블록 ② 석정반 ③ 마그네틱 스탠드 ④ 중심 지지대
+      <div class="ox" data-a="3"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 원통형 제품을 설치하거나 지지할 때 쓰는 피측정물 고정용 보조 기구는?<br>① 마이크로미터 스탠드 ② V-블록 ③ 마그네틱 스탠드 ④ 고정용 스탠드
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">6. 측정량에서 기준량을 뺀 뒤 나머지 값만 편위법으로 측정하는 방법은 무엇인가? (단답)
+      <button>정답 보기</button><div class="ans">보상법</div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>정리</b>종류(직접·간접·비교)는 '무엇과 견주는가', 방식(편위·영위·보상·치환)은 '어떻게 값을 읽는가'의 구분이다.</div>
+</section>
+
+<!-- 2차시 표지 -->
+<section class="page sec-cover" data-title="2차시 · 오차, 정확도와 정밀도">
+  <div class="num">2</div>
+  <h1>오차, 정확도와 정밀도</h1>
+  <div class="sub">절대 오차·상대 오차 / 계통 오차(기기·환경·개인·이론)·과실 오차·우연 오차<br>정확도와 정밀도 / 측정값을 믿을 수 있으려면</div>
+</section>
+
+<!-- 오차의 종류 -->
+<section class="page" data-title="오차의 종류">
+  <div class="kicker"><span class="lesson">2차시</span>오차의 종류 <span class="pg">교재 3쪽</span></div>
+  <h2>측정값은 왜 참값과 다른가 — 오차의 종류</h2>
+  <div class="cols c46">
+    <div class="col">
+      <div class="card t"><p><b>오차</b> = 측정값 − 참값. 어떤 측정기도 참값을 완벽하게 얻을 수 없으므로, 오차를 <b>알고 줄이는 것</b>이 측정의 핵심이다.</p></div>
+      <div class="grid2">
+        <div class="box"><h4>절대 오차</h4><p class="mini">측정값과 참값의 차이<br><b>절대 오차 = 측정값 − 참값</b></p></div>
+        <div class="box"><h4>상대 오차</h4><p class="mini">오차와 참값(또는 측정값)의 비율<br><b>상대 오차 = 오차 ÷ 참값</b></p></div>
+      </div>
+      <div class="box gd"><h4>예) 참값 50.00 mm 블록을 50.02 mm로 읽었다</h4>
+        <p class="mini">절대 오차 = 50.02 − 50.00 = <b>+0.02 mm</b><br>상대 오차 = 0.02 ÷ 50 = 0.0004 = <b>0.04 %</b><br>같은 0.02 mm라도 5 mm 핀이면 0.4 %로 10배 크다.</p></div>
+      <div class="analogy"><b class="lab">비유</b>시험에서 2점 틀린 것은 같아도, 10점 만점의 2점과 100점 만점의 2점은 무게가 다르다. 앞의 '2점'이 절대 오차, '몇 %'가 상대 오차이다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox"><svg viewBox="0 0 560 330">
+        <g font-size="14" text-anchor="middle">
+          <rect x="200" y="8" width="160" height="36" rx="8" fill="#0F3057"/><text x="280" y="31" fill="#fff" font-weight="700">원인에 따른 오차</text>
+          <rect x="20" y="80" width="160" height="40" rx="8" fill="#00879E"/><text x="100" y="98" fill="#fff" font-weight="700">계통 오차</text><text x="100" y="114" fill="#e2f3f5" font-size="11.5">항상 같은 크기·부호</text>
+          <rect x="200" y="80" width="160" height="40" rx="8" fill="#c8423b"/><text x="280" y="98" fill="#fff" font-weight="700">과실 오차</text><text x="280" y="114" fill="#fde" font-size="11.5">측정자의 부주의</text>
+          <rect x="380" y="80" width="160" height="40" rx="8" fill="#FFC145"/><text x="460" y="98" fill="#0F3057" font-weight="700">우연 오차</text><text x="460" y="114" fill="#0F3057" font-size="11.5">원인 분석 불가</text>
+        </g>
+        <g stroke="#5b6876" stroke-width="2"><line x1="280" y1="44" x2="280" y2="62"/><line x1="100" y1="62" x2="460" y2="62"/><line x1="100" y1="62" x2="100" y2="78"/><line x1="280" y1="62" x2="280" y2="78"/><line x1="460" y1="62" x2="460" y2="78"/>
+          <line x1="100" y1="120" x2="100" y2="140"/><line x1="30" y1="140" x2="170" y2="140"/></g>
+        <g font-size="13">
+          <rect x="6" y="150" width="190" height="40" rx="6" fill="#e2f3f5" stroke="#00879E"/><text x="14" y="167" font-weight="700" fill="#0F3057">기기 오차</text><text x="14" y="183" fill="#5b6876" font-size="11.5">부품 마모·눈금 부정확·지시 변화</text>
+          <rect x="6" y="196" width="190" height="40" rx="6" fill="#e2f3f5" stroke="#00879E"/><text x="14" y="213" font-weight="700" fill="#0F3057">환경 오차</text><text x="14" y="229" fill="#5b6876" font-size="11.5">온도·조명·습도·소음·진동</text>
+          <rect x="6" y="242" width="190" height="40" rx="6" fill="#e2f3f5" stroke="#00879E"/><text x="14" y="259" font-weight="700" fill="#0F3057">개인 오차</text><text x="14" y="275" fill="#5b6876" font-size="11.5">심리 상태·습관·숙련도</text>
+          <rect x="6" y="288" width="190" height="40" rx="6" fill="#e2f3f5" stroke="#00879E"/><text x="14" y="305" font-weight="700" fill="#0F3057">이론 오차</text><text x="14" y="321" fill="#5b6876" font-size="11.5">공식 오차·근사 계산</text>
+          <text x="214" y="160" fill="#c8423b" font-size="12.5">· 눈금을 잘못 읽음(시차)</text><text x="214" y="180" fill="#c8423b" font-size="12.5">· 기록 실수, 측정기 오조작</text>
+          <text x="214" y="215" fill="#c8423b" font-size="12.5">→ 주의하면 없앨 수 있다</text>
+          <text x="384" y="160" fill="#9a7400" font-size="12.5">· 원인을 알 수 없이</text><text x="384" y="180" fill="#9a7400" font-size="12.5">  ± 로 흩어진다</text>
+          <text x="384" y="215" fill="#9a7400" font-size="12.5">→ 측정 횟수를 늘리면</text><text x="384" y="235" fill="#9a7400" font-size="12.5">  ± 가 상쇄된다</text>
+          <text x="214" y="275" fill="#00879E" font-size="12.5">계통 오차 → 원인을 찾아</text><text x="214" y="295" fill="#00879E" font-size="12.5">영점 재조정·표준기 비교로 보정한다</text>
+        </g>
+      </svg></div>
+    </div>
+  </div>
+  <div class="oneline"><b>핵심</b>늘 같은 방향으로 틀리면 계통 오차(보정), 들쭉날쭉하면 우연 오차(반복 측정), 실수면 과실 오차(주의).</div>
+</section>
+
+<!-- 과녁 위젯 -->
+<section class="page" data-title="정확도와 정밀도 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">2차시</span>정확도와 정밀도 <span class="pg">교재 5쪽</span></div>
+  <h2>과녁으로 보는 정확도와 정밀도</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="box hl"><h4>정확도 (accuracy)</h4><p class="mini">① <b>참값에 근접한 정도</b>이다.<br>② 측정 결과 오차가 작으면 정확도가 높다.<br>③ 치우침이 작으면 정확도가 높다.<br>④ <b>계통 오차</b>에 의해 정확도가 낮아진다.</p></div>
+      <div class="box gd"><h4>정밀도 (precision)</h4><p class="mini">① 측정의 <b>재현성</b> 정도이다.<br>② 측정값의 <b>흐트러짐</b>이 작으면 정밀도가 높다.<br>③ 분산이 작을수록 정밀도가 높다.<br>④ <b>우연 오차</b>에 의해 정밀도가 낮아진다.</p></div>
+      <div class="analogy"><b class="lab">비유</b>양궁 선수의 화살이 모두 한곳에 모였지만 과녁 중심에서 벗어났다면 <b>정밀하지만 정확하지 않다</b>. 조준기(영점)가 틀어진 것이므로 조준기만 고치면 된다 — 이것이 계통 오차의 보정이다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-tgt" viewBox="0 0 560 330"></svg>
+        <div class="ctrl">치우침(계통 오차) <button data-tb="0" class="on">없음</button><button data-tb="1">있음</button>
+          <span class="sp"></span>흩어짐(우연 오차) <button data-ts="0" class="on">작음</button><button data-ts="1">큼</button>
+          <span class="sp"></span><button id="tgt-more">10발 더 쏘기</button><button id="tgt-clr">지우기</button></div>
+        <div class="readout" id="tgt-out"></div>
+      </div>
+    </div>
+  </div>
+  <div class="oneline"><b>핵심</b>정확도 ↔ 계통 오차(치우침) / 정밀도 ↔ 우연 오차(흩어짐). 두 값이 모두 높아야 좋은 측정이다.</div>
+</section>
+
+<!-- 분류 활동 -->
+<section class="page" data-title="활동 · 이 오차는 어떤 오차인가">
+  <div class="kicker"><span class="lesson">2차시</span>확인 활동 <span class="pg">교재 3쪽</span></div>
+  <h2>상황 속 오차 분류하기 — 계통·과실·우연</h2>
+  <div class="cols c64">
+    <div class="col">
+      <div class="ctrl" style="font-size:16px">종류를 고르고 → 상황을 누른다:
+        <span class="sp"></span><button data-ecls="1" class="on">계통 오차</button><button data-ecls="2">우연 오차</button><button data-ecls="3">과실 오차</button></div>
+      <div class="sortq" id="sort2" style="margin-top:6px">
+        <button data-c="1">마모된 마이크로미터 앤빌 때문에 늘 0.01 mm 작게 나온다</button>
+        <button data-c="1">한여름 측정실이 30 ℃라 강철 블록이 늘어났다</button>
+        <button data-c="3">49.5를 기록지에 45.9로 적었다</button>
+        <button data-c="2">같은 축을 10번 쟀더니 값이 ±0.002 mm로 오르내린다</button>
+        <button data-c="1">손에 쥔 채 오래 재는 습관 때문에 늘 크게 나온다</button>
+        <button data-c="3">버니어 눈금을 비스듬히 보고 잘못 읽었다</button>
+        <button data-c="1">근사 공식으로 계산한 값이 늘 조금 작다</button>
+        <button data-c="2">원인을 찾을 수 없는 미세한 진동으로 값이 흔들린다</button>
+      </div>
+      <div class="ctrl" style="margin-top:8px"><button id="sort2-chk">채점하기</button><button id="sort2-rst">다시 하기</button><span class="readout" id="sort2-out" style="margin-left:10px"></span></div>
+      <div class="legend"><span><i style="background:#00879E"></i>계통</span><span><i style="background:#FFC145"></i>우연</span><span><i style="background:#0F3057"></i>과실</span><span><i style="background:#fbe3e1;border:1px solid #c8423b"></i>틀림</span></div>
+    </div>
+    <div class="col">
+      <div class="card"><h3>줄이는 방법이 다르다</h3>
+        <table class="t" style="font-size:15px">
+          <tr><th>오차</th><th>줄이는 방법</th></tr>
+          <tr><td class="c">계통</td><td>원인을 찾아 <b>보정</b>(영점 재조정, 표준기 비교, 온도 20 ℃ 유지)</td></tr>
+          <tr><td class="c">우연</td><td><b>측정 횟수를 늘려</b> 평균을 낸다(±가 상쇄)</td></tr>
+          <tr><td class="c">과실</td><td><b>주의</b>와 숙련, 다시 측정</td></tr>
+        </table></div>
+      <div class="supp"><b class="lab">보충</b>개인 오차(습관·숙련도)는 계통 오차에 속하고, 순간의 실수(잘못 읽기·잘못 적기)는 과실 오차이다. '늘 같은 방향'이면 계통, '한 번의 실수'면 과실로 구분한다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2차시 확인 -->
+<section class="page" data-title="2차시 확인 문제">
+  <div class="kicker"><span class="lesson">2차시</span>확인 문제 <span class="pg">기출 연계</span></div>
+  <h2>2차시 확인 문제</h2>
+  <div class="quiz">
+    <div class="q">1. 측정기의 구조상 생기는 오차로, 부품 마모·눈금 부정확·지시 변화에 의한 오차는?<br>① 기기 오차 ② 환경 오차 ③ 개인 오차 ④ 우연 오차
+      <div class="ox" data-a="1"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 측정자와 관계없이 우연하고 필연적으로 생기며 원인 분석이 불가능한 오차는?<br>① 과실 오차 ② 우연 오차 ③ 환경 오차 ④ 시차
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 측정 결과 오차가 작은 경우 정확도가 높다.
+      <div class="ox" data-a="1"><button>O</button><button>X</button></div><div class="fb"></div></div>
+    <div class="q">4. 정밀도에 대한 설명으로 옳지 않은 것은?<br>① 측정의 재현성 정도이다 ② 우연 오차에 의해 정밀도가 높아진다 ③ 흐트러짐이 작으면 정밀도가 높다 ④ 분산이 작을수록 정밀도가 높다
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 참값 20.00 mm인 핀을 20.04 mm로 측정하였다. 상대 오차(%)는?
+      <button>정답 보기</button><div class="ans">0.04 ÷ 20 × 100 = 0.2 %</div></div>
+    <div class="q">6. 측정 횟수를 늘리면 정(+)과 부(−)가 서로 상쇄되어 줄어드는 오차는? (단답)
+      <button>정답 보기</button><div class="ans">우연 오차</div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>정리</b>치우치면 계통 오차(정확도↓, 보정), 흩어지면 우연 오차(정밀도↓, 반복 측정), 실수면 과실 오차(주의).</div>
+</section>
+
+<!-- 3차시 표지 -->
+<section class="page sec-cover" data-title="3차시 · 버니어캘리퍼스">
+  <div class="num">3</div>
+  <h1>버니어캘리퍼스</h1>
+  <div class="sub">구조와 종류(M·CB·CM형) / 아들자 눈금의 원리와 최소 측정값<br>눈금 읽기 / 아베의 원리와 시차 / 측정 시 주의사항</div>
+</section>
+
+<!-- 구조와 종류 -->
+<section class="page" data-title="버니어캘리퍼스의 구조와 종류">
+  <div class="kicker"><span class="lesson">3차시</span>구조와 종류 <span class="pg">교재 4쪽 · 보충</span></div>
+  <h2>한 개의 측정기로 바깥·안·깊이·단차를 잰다</h2>
+  <div class="cols c64">
+    <div class="col">
+      <div class="wbox"><svg viewBox="0 0 640 260">
+        <rect x="70" y="70" width="540" height="40" fill="#e6ecf3" stroke="#0F3057" stroke-width="2"/>
+        <g stroke="#0F3057" stroke-width="1.2" id="vc-ticks"></g>
+        <path d="M70 70 V40 H100 V70" fill="#c9d4df" stroke="#0F3057" stroke-width="2"/>
+        <path d="M70 110 V215 L95 230 V110" fill="#c9d4df" stroke="#0F3057" stroke-width="2"/>
+        <rect x="160" y="64" width="120" height="70" rx="6" fill="#00879E" opacity=".9"/>
+        <path d="M160 70 V40 H135 V64" fill="#7fc3cf" stroke="#0F3057" stroke-width="2"/>
+        <path d="M160 134 V215 L135 230 V134" fill="#7fc3cf" stroke="#0F3057" stroke-width="2"/>
+        <rect x="610" y="84" width="24" height="12" fill="#c9d4df" stroke="#0F3057"/>
+        <circle cx="240" cy="72" r="7" fill="#FFC145" stroke="#0F3057"/>
+        <g font-size="13" fill="#0F3057" font-weight="700">
+          <text x="350" y="62">어미자(본척)</text><line x1="380" y1="66" x2="380" y2="76" stroke="#0F3057"/>
+          <text x="170" y="158" fill="#00879E">아들자(부척)·슬라이더</text>
+          <text x="6" y="250">외측 측정면(조)</text><line x1="60" y1="240" x2="90" y2="222" stroke="#0F3057"/>
+          <text x="20" y="30">내측 측정면</text><line x1="80" y1="34" x2="110" y2="46" stroke="#0F3057"/>
+          <text x="520" y="135">깊이바 →</text>
+          <text x="250" y="30">고정 나사</text><line x1="262" y1="34" x2="244" y2="64" stroke="#0F3057"/>
+        </g>
+        <rect x="95" y="160" width="40" height="50" fill="#FFC145" opacity=".55"/><text x="115" y="190" text-anchor="middle" font-size="11" fill="#0F3057">공작물</text>
+      </svg></div>
+      <div class="grid4">
+        <div class="box"><h4>외측</h4><p class="mini">바깥지름·두께</p></div>
+        <div class="box"><h4>내측</h4><p class="mini">안지름·홈 폭</p></div>
+        <div class="box"><h4>깊이</h4><p class="mini">깊이바로 구멍 깊이</p></div>
+        <div class="box"><h4>단차</h4><p class="mini">어미자 끝면으로 계단 높이</p></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="supp"><b class="lab">보충</b>버니어캘리퍼스의 종류</div>
+      <table class="t" style="font-size:15px">
+        <tr><th>형식</th><th>특징</th></tr>
+        <tr><td class="c"><b>M형</b></td><td>가장 많이 쓰인다(M1·M2형). 외측·내측·<b>깊이(깊이바)</b>·단차 측정</td></tr>
+        <tr><td class="c"><b>CB형</b></td><td>슬라이더가 상자형, 미동 장치가 있다. 조 끝으로 내측 측정</td></tr>
+        <tr><td class="c"><b>CM형</b></td><td>슬라이더에 미동 장치, 외측 조 끝으로 내측 측정</td></tr>
+      </table>
+      <div class="box gd"><h4>잴 수 없는 것</h4><p class="mini"><b>진원도·평면도</b>처럼 모양이 얼마나 바른지는 버니어로 잴 수 없다. 다이얼게이지 등으로 잰다.</p></div>
+      <div class="word"><b>낱말 풀이</b> 버니어(vernier)는 아들자를 고안한 프랑스 수학자 피에르 베르니에의 이름에서 왔다. '요한슨형'은 버니어가 아니라 <b>게이지 블록</b>의 한 형식이다.</div>
+    </div>
+  </div>
+  <div class="oneline"><b>핵심</b>버니어캘리퍼스 = 어미자 + 아들자. 외측·내측·깊이·단차를 재지만, 진원도 같은 모양 정밀도는 잴 수 없다.</div>
+</section>
+
+<!-- 원리 위젯 -->
+<section class="page" data-title="아들자의 원리와 최소 측정값 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">3차시</span>아들자의 원리 <span class="pg">교재 4쪽 · 보충 Ⅰ-2</span></div>
+  <h2>왜 아들자로 0.05 mm까지 읽을 수 있는가</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="formula">최소 측정값 = 어미자 1눈금 ÷ 아들자 등분 수(n)</div>
+      <p class="mini">아들자는 어미자 <b>(n−1)눈금</b> 길이를 <b>n등분</b>한다. 그래서 아들자 1눈금은 어미자 1눈금보다 '1/n 눈금'만큼 짧다.</p>
+      <table class="t" style="font-size:14.5px">
+        <tr><th>어미자 1눈금</th><th>아들자</th><th>최소 측정값</th></tr>
+        <tr><td class="c">1 mm</td><td>19 mm를 20등분</td><td class="c"><b>0.05 mm</b></td></tr>
+        <tr><td class="c">1 mm</td><td>49 mm를 50등분</td><td class="c"><b>0.02 mm</b></td></tr>
+        <tr><td class="c">0.5 mm</td><td>12 mm를 25등분</td><td class="c"><b>0.02 mm</b></td></tr>
+        <tr><td class="c">0.5 mm</td><td>24.5 mm를 50등분</td><td class="c">0.01 mm</td></tr>
+      </table>
+      <div class="analogy"><b class="lab">비유</b>보폭이 100 cm인 사람과 95 cm인 사람이 같은 출발선에서 걷는다. 한 걸음마다 5 cm씩 차이가 벌어지므로 '몇 걸음째에 발이 다시 맞는가'를 보면 5 cm 단위의 차이를 알 수 있다. 아들자는 이 '5 cm 차이'를 0.05 mm로 줄인 것이다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-vp" viewBox="0 0 560 250"></svg>
+        <div class="ctrl">형식 <button data-vt="a" class="on">19/20 (0.05)</button><button data-vt="b">49/50 (0.02)</button><button data-vt="c">0.5눈금 12/25 (0.02)</button></div>
+        <div class="ctrl">아들자 이동 <input type="range" id="vp-v" min="0" max="2" step="0.01" value="0.35" style="width:260px"></div>
+        <div class="readout" id="vp-out"></div>
+      </div>
+      <div class="supp"><b class="lab">생각</b>'12 mm를 25등분한 버니어'의 최소 눈금은? 25등분이 12 mm에 맞으려면 어미자 1눈금이 0.5 mm(24눈금)여야 하므로 <b>0.5 ÷ 25 = 0.02 mm</b>이다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 읽기 연습 -->
+<section class="page" data-title="눈금 읽기 연습 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">3차시</span>눈금 읽기 <span class="pg">교재 4쪽 9) · 14쪽</span></div>
+  <h2>어미자를 먼저, 아들자를 나중에 — 버니어 눈금 읽기</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="steps">
+        <div>아들자 <b>0 눈금</b>의 바로 왼쪽 어미자 눈금을 읽는다. → 예: <b>52 mm</b></div>
+        <div>어미자 눈금과 <b>일직선으로 맞는 아들자 눈금</b>을 찾는다. → 예: 4와 5 사이 한 칸, 즉 <b>4.5</b></div>
+        <div>아들자 눈금 값에 최소 측정값을 적용한다. → 9칸 × 0.05 = <b>0.45 mm</b></div>
+        <div class="hl">두 값을 더한다. → 52 + 0.45 = <b>52.45 mm</b></div>
+      </div>
+      <div class="box"><h4>교재의 예</h4><p class="mini">어미자 19 mm + 아들자 0.45 mm = <b>19.45 mm</b> (교재 4쪽)<br>어미자 52 mm + 아들자 0.45 mm = <b>52.45 mm</b> (교재 14쪽)</p></div>
+      <div class="analogy"><b class="lab">비유</b>시계를 읽을 때 시침으로 '몇 시'를 먼저 읽고 분침으로 '몇 분'을 더하듯이, 어미자로 mm를 먼저 읽고 아들자로 소수점 아래를 더한다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-vd" viewBox="0 0 560 250"></svg>
+        <div class="ctrl">형식 <button data-vd="a" class="on">0.05 mm</button><button data-vd="b">0.02 mm</button></div>
+        <div class="drill">측정값 <input id="vd-in" placeholder="예: 23.45"> mm <button id="vd-chk">확인</button><button class="sub" id="vd-new">새 문제</button><button class="sub" id="vd-show">정답 보기</button></div>
+        <div class="readout" id="vd-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 아베의 원리 -->
+<section class="page" data-title="아베의 원리와 시차 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">3차시</span>아베의 원리 · 시차 <span class="pg">교재 5쪽 3) · 2쪽 10) · 4쪽 ⑦</span></div>
+  <h2>눈금과 측정 축이 일직선이어야 한다 — 아베의 원리</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="card t"><p><b>아베의 원리</b>: 측정 축과 눈금은 측정 방향에서 <b>일직선상에 배치</b>되어야 한다는 원리이다.</p>
+        <p class="mini">버니어캘리퍼스는 눈금(어미자)과 측정점(조)이 떨어져 있어 <b>아베의 원리에 맞지 않는 구조</b>이다. 측정력으로 조가 조금만 기울어도 오차 ε가 생긴다. 내측 마이크로미터, 하이트게이지도 같다.</p></div>
+      <div class="box gd"><h4>그래서 이렇게 잰다</h4><p class="mini">① 공작물을 조의 <b>안쪽(어미자에 가까운 쪽)</b>에 물린다.<br>② 측정력을 <b>과하게 주지 않는다</b>(정압 장치가 없다).<br>③ 하이트게이지는 스크라이버를 <b>짧게</b> 단다.</p></div>
+      <div class="box"><h4>시차(視差)</h4><p class="mini">눈의 위치에 따라 눈금이 다르게 읽히는 오차이다. 눈금을 항상 <b>직각(수직) 방향</b>에서 읽는다.</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-abbe" viewBox="0 0 560 270"></svg>
+        <div class="ctrl">측정기 <button data-ab="v" class="on">버니어캘리퍼스</button><button data-ab="m">외측 마이크로미터</button>
+          <span class="sp"></span>물리는 위치 <button data-ap="out" class="on">조 끝쪽</button><button data-ap="in">안쪽</button></div>
+        <div class="ctrl">측정력 <input type="range" id="abbe-f" min="0" max="10" value="6"></div>
+        <div class="readout" id="abbe-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>긴 집게로 물건을 집으면 끝으로 갈수록 집게가 벌어진다. 손잡이(눈금)에서 멀리 떨어진 곳을 집을수록 '벌어짐'이 커진다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 주의사항 -->
+<section class="page" data-title="버니어캘리퍼스 측정·취급 주의사항">
+  <div class="kicker"><span class="lesson">3차시</span>측정 시 주의사항 <span class="pg">교재 2쪽 10) · 4쪽 4) · 6쪽 (1)</span></div>
+  <h2>버니어캘리퍼스, 이렇게 재고 이렇게 보관한다</h2>
+  <div class="cols">
+    <div class="col">
+      <h3>측정할 때</h3>
+      <div class="steps">
+        <div><b>영점</b>을 먼저 확인한다. 오차가 있으면 측정 후 보정한다.</div>
+        <div>측정면의 <b>안쪽(어미자 가까운 쪽)</b>에서 잰다. 조의 끝은 얇아 마모되기 쉽다.</div>
+        <div>공작물에 <b>직각</b>으로 대고, 부척을 엄지로 가볍게 누른 채 좌우로 움직여 밀착시킨다.</div>
+        <div class="hl">안지름은 <b>최댓값</b>, 홈 나비는 <b>최솟값</b>을 취한다.</div>
+        <div>정압 장치가 없으므로 <b>무리한 측정력</b>을 주지 않는다.</div>
+        <div>눈금은 <b>직각 방향</b>에서 읽는다(시차 방지). 피측정물은 정지 상태에서 잰다.</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="wbox"><svg viewBox="0 0 460 170">
+        <circle cx="110" cy="85" r="62" fill="#e2f3f5" stroke="#00879E" stroke-width="3"/>
+        <line x1="48" y1="85" x2="172" y2="85" stroke="#c8423b" stroke-width="3" marker-end="url(#ah)"/><line x1="58" y1="55" x2="162" y2="55" stroke="#5b6876" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="110" y="78" text-anchor="middle" font-size="12.5" fill="#c8423b" font-weight="700">최댓값 = 진짜 안지름</text><text x="110" y="49" text-anchor="middle" font-size="11" fill="#5b6876">빗나가면 작게 읽힌다</text>
+        <rect x="270" y="30" width="40" height="110" fill="#c9d4df"/><rect x="380" y="30" width="40" height="110" fill="#c9d4df"/>
+        <line x1="310" y1="85" x2="380" y2="85" stroke="#c8423b" stroke-width="3"/><line x1="310" y1="60" x2="382" y2="40" stroke="#5b6876" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="345" y="105" text-anchor="middle" font-size="12.5" fill="#c8423b" font-weight="700">최솟값 = 홈 폭</text><text x="345" y="160" text-anchor="middle" font-size="11" fill="#5b6876">기울면 크게 읽힌다</text>
+      </svg></div>
+      <h3>취급·보관할 때 <span class="pg" style="font-size:14px;color:var(--muted)">교재 6쪽</span></h3>
+      <ul class="tight">
+        <li>공작물에 접촉할 때 지나치게 힘을 주지 않는다.</li>
+        <li>조의 사용 부분에 따라 <b>보정값</b>을 적용하는 습관을 가진다.</li>
+        <li>보관할 때는 조끼리 닿지 않게 <b>약간 틈</b>을 두고, 케이스에 넣거나 <b>평평하게 눕혀</b> 둔다.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3차시 확인 -->
+<section class="page" data-title="3차시 확인 문제">
+  <div class="kicker"><span class="lesson">3차시</span>확인 문제 <span class="pg">기출 연계</span></div>
+  <h2>3차시 확인 문제</h2>
+  <div class="quiz">
+    <div class="q">1. 버니어캘리퍼스의 종류가 아닌 것은?<br>① M형 ② CM형 ③ CB형 ④ 요한슨형
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 19 mm의 눈금을 20등분한 버니어캘리퍼스의 최소 눈금은?<br>① 0.001 mm ② 0.01 mm ③ 0.02 mm ④ 0.05 mm
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 12 mm를 25등분한 버니어캘리퍼스의 최소 눈금[mm]은?<br>① 0.01 ② 0.02 ③ 0.03 ④ 0.04
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">4. 버니어캘리퍼스 사용 시 주의점으로 옳지 않은 것은?<br>① 측정면을 정확히 접촉한다 ② 어미자 눈금에서 먼 쪽에서 측정한다 ③ 사용 전 깨끗이 닦는다 ④ 눈금면의 직각 방향에서 읽는다
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 버니어캘리퍼스로 측정할 수 없는 것은?<br>① 깊이 ② 단차 ③ 길이 ④ 진원도
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">6. "측정 축과 눈금은 측정 방향에서 일직선상에 배치되어야 한다"는 원리는?
+      <button>정답 보기</button><div class="ans">아베의 원리</div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>정리</b>최소 측정값 = 어미자 1눈금 ÷ n. 읽을 때는 어미자 + 아들자. 버니어는 아베의 원리에 맞지 않으므로 안쪽에서, 가볍게, 직각에서 읽는다.</div>
+</section>
+
+<!-- 4차시 표지 -->
+<section class="page sec-cover" data-title="4차시 · 마이크로미터">
+  <div class="num">4</div>
+  <h1>마이크로미터</h1>
+  <div class="sub">각부 명칭 / 나사로 0.01 mm를 재는 원리<br>슬리브·심블 눈금 읽기 / 0점 조정과 래칫스톱 / 후크의 법칙 / 취급 주의</div>
+</section>
+
+<!-- 각부 명칭 -->
+<section class="page" data-title="마이크로미터 각부 명칭 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">4차시</span>각부 명칭 <span class="pg">교재 3~6쪽</span></div>
+  <h2>마이크로미터는 어떤 부품으로 이루어져 있는가</h2>
+  <div class="cols c64">
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-mparts" viewBox="0 0 640 300"></svg>
+        <div class="ctrl" id="mp-btns">부품 <button data-mp="anvil" class="on">앤빌</button><button data-mp="spindle">스핀들</button><button data-mp="sleeve">슬리브</button><button data-mp="thimble">심블</button><button data-mp="ratchet">래칫스톱</button><button data-mp="clamp">클램프</button><button data-mp="frame">프레임</button></div>
+        <div class="ctrl"><button id="mp-quiz">이름 맞히기 퀴즈</button><span class="readout" id="mp-out" style="margin-left:8px"></span></div>
+      </div>
+    </div>
+    <div class="col" style="gap:7px">
+      <div class="box"><h4>앤빌 (anvil)</h4><p class="mini">프레임에 고정된 측정면. 움직이지 않는다.</p></div>
+      <div class="box"><h4>스핀들 (spindle)</h4><p class="mini">나사로 앞뒤로 움직이는 측정면. 앤빌과 함께 공작물을 문다.</p></div>
+      <div class="box hl"><h4>슬리브 (sleeve) · 심블 (thimble)</h4><p class="mini">슬리브: 기선과 <b>0.5 mm 눈금</b>이 있는 고정 통 / 심블: 돌리는 통, 둘레가 <b>50등분</b>(0.01 mm)</p></div>
+      <div class="box gd"><h4>래칫스톱 (ratchet stop)</h4><p class="mini">일정한 힘 이상이면 헛돌아 <b>측정력(측정압)을 일정하게</b> 유지한다.</p></div>
+      <div class="box"><h4>클램프(고정 장치) · 프레임</h4><p class="mini">클램프: 스핀들을 고정 / 프레임: 전체 몸체(U자형)</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 원리 -->
+<section class="page" data-title="나사로 0.01 mm를 재는 원리">
+  <div class="kicker"><span class="lesson">4차시</span>측정 원리 <span class="pg">교재 5쪽 10) · 보충</span></div>
+  <h2>한 바퀴에 0.5 mm, 1/50 바퀴에 0.01 mm</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="card t"><p>마이크로미터는 <b>나사</b>의 원리를 이용한다. 스핀들의 나사 <b>피치가 0.5 mm</b>이므로 심블을 <b>1회전</b>하면 스핀들이 <b>0.5 mm</b> 움직인다.</p></div>
+      <div class="formula">최소 측정값 = 피치 ÷ 심블 등분 수 = 0.5 ÷ 50 = 0.01 mm</div>
+      <table class="t">
+        <tr><th>심블 돌린 양</th><th>스핀들 이동</th></tr>
+        <tr><td class="c">1눈금 (1/50 회전)</td><td class="c"><b>0.01 mm</b></td></tr>
+        <tr><td class="c">1회전</td><td class="c"><b>0.5 mm</b> (슬리브 아래 눈금 한 칸)</td></tr>
+        <tr><td class="c">2회전</td><td class="c"><b>1 mm</b> (슬리브 위 눈금 한 칸)</td></tr>
+      </table>
+      <div class="analogy"><b class="lab">비유</b>볼트를 너트에 한 바퀴 돌려 넣으면 피치만큼 들어간다. 큰 원을 그리며 돌린 손의 움직임이 아주 작은 직선 이동으로 바뀌므로, 돌린 각도만 정확히 읽으면 아주 작은 길이를 잴 수 있다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-mscrew" viewBox="0 0 520 250"></svg>
+        <div class="ctrl"><button data-play class="on">⏸ 정지</button><span class="sp"></span><button id="ms-1">1눈금</button><button id="ms-10">10눈금</button><button id="ms-50">1회전</button><button id="ms-100">2회전</button><button id="ms-0">처음으로</button></div>
+        <div class="readout" id="ms-out"></div>
+      </div>
+      <div class="supp"><b class="lab">보충</b>슬리브 눈금은 기선 <b>위쪽이 1 mm</b>, <b>아래쪽이 그 사이의 0.5 mm</b>를 나타낸다. 심블 끝이 아래쪽 눈금을 넘었으면 0.5 mm를 더해야 한다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 읽기 -->
+<section class="page" data-title="마이크로미터 눈금 읽기 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">4차시</span>눈금 읽기 <span class="pg">교재 5쪽 10) · 14쪽</span></div>
+  <h2>슬리브를 먼저, 심블을 나중에 — 마이크로미터 눈금 읽기</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="steps">
+        <div>심블 끝에서 보이는 <b>슬리브 위 눈금</b>(1 mm)을 읽는다. → 예: <b>11 mm</b></div>
+        <div>그 오른쪽에 <b>아래 눈금</b>(0.5 mm)이 보이면 0.5를 더한다. → 예: 보이면 11.5</div>
+        <div>슬리브 <b>기선과 일치하는 심블 눈금</b>을 읽는다. → 예: 23 → <b>0.23 mm</b></div>
+        <div class="hl">더한다. → 11.5 + 0.23 = <b>11.73 mm</b></div>
+      </div>
+      <div class="box"><h4>교재의 예</h4><p class="mini">슬리브 11 + 심블 0.73 = <b>11.73 mm</b> (5쪽)<br>슬리브 6.0 + 심블 0.37 = <b>6.37 mm</b> (14쪽 그림 a)</p></div>
+      <div class="analogy"><b class="lab">비유</b>아파트 층수를 엘리베이터 숫자(슬리브)로 먼저 읽고, 몇 번째 계단(심블)인지 더하는 것과 같다. 반층(0.5 mm) 표시를 놓치면 0.5 mm가 통째로 틀린다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-mread" viewBox="0 0 560 250"></svg>
+        <div class="ctrl"><button data-mr="free" class="on">밀대로 돌리기</button><button data-mr="drill">읽기 연습</button><span class="sp"></span>측정값 <input type="range" id="mr-v" min="0" max="25" step="0.01" value="11.73" style="width:220px"></div>
+        <div class="drill">답 <input id="mr-in" placeholder="예: 7.38"> mm <button id="mr-chk">확인</button><button class="sub" id="mr-new">새 문제</button><button class="sub" id="mr-show">정답 보기</button></div>
+        <div class="readout" id="mr-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 0점·래칫·후크 -->
+<section class="page" data-title="0점 조정, 래칫스톱과 후크의 법칙 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">4차시</span>0점 조정 · 측정력 <span class="pg">교재 3~4쪽 · 5쪽 4)</span></div>
+  <h2>같은 힘으로 재야 같은 값이 나온다 — 래칫스톱과 후크의 법칙</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <h3>외측 마이크로미터(0~25 mm) 0점 조정</h3>
+      <div class="steps">
+        <div>앤빌과 스핀들의 측정면을 깨끗이 닦는다.</div>
+        <div><b>래칫스톱</b>을 돌려 측정면이 닿으면 약 <b>3~4회</b> 더 돌린다.</div>
+        <div>슬리브 기선과 심블 0점이 일치하고, 슬리브 0 눈금선이 <b>절반 정도</b> 보이면 좋다.</div>
+        <div>맞지 않으면 <b>훅 렌치</b>로 슬리브를 돌려 기선을 맞춘다.</div>
+      </div>
+      <div class="card t"><p class="mini"><b>후크의 법칙</b>: 어떤 길이와 단면을 갖는 물체에 하중을 가하면, <b>탄성 한계 내에서</b> 하중에 비례하는 변형(변위)이 생긴다는 법칙이다. 측정력이 커지면 공작물과 측정기가 그만큼 눌려 값이 달라진다.</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-ratch" viewBox="0 0 520 240"></svg>
+        <div class="ctrl"><button data-rt="hand" class="on">심블을 손으로 세게 돌림</button><button data-rt="ratchet">래칫스톱으로 돌림</button><span class="sp"></span><button id="rt-go">다시 재기</button></div>
+        <div class="readout" id="rt-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>자동차 바퀴 볼트를 조일 때 '토크 렌치'는 정해진 힘에 이르면 '딸깍' 하고 헛돈다. 래칫스톱이 바로 마이크로미터의 토크 렌치이다. 누가 재든 같은 힘으로 재게 해 준다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 주의 -->
+<section class="page" data-title="마이크로미터 측정·취급 주의사항">
+  <div class="kicker"><span class="lesson">4차시</span>주의사항 <span class="pg">교재 2쪽 9) · 4쪽 5) · 6쪽 (2)</span></div>
+  <h2>마이크로미터, 이렇게 재고 이렇게 보관한다</h2>
+  <div class="cols">
+    <div class="col">
+      <h3>측정할 때</h3>
+      <ul class="tight">
+        <li>측정물의 크기·수량·정밀도에 맞는 <b>형식과 측정 범위</b>(0~25, 25~50 …)를 고른다.</li>
+        <li>측정기를 깨끗이 닦고 <b>정확한 영점 조정</b>을 한다.</li>
+        <li>측정기와 측정물을 <b>같은 온도</b>에서 잰다(손에 오래 쥐지 않는다).</li>
+        <li>반드시 <b>정지된 상태</b>에서 잰다.</li>
+        <li>영점 조정 때와 <b>같은 측정 압력</b>을 준다(래칫스톱 사용).</li>
+        <li>눈금은 <b>일직선상</b>에서 읽는다(시차 방지).</li>
+        <li>떨어뜨리거나 충격을 주지 않는다.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>취급·보관할 때</h3>
+      <ul class="tight">
+        <li>청결한 상태를 유지한다.</li>
+        <li><b>앤빌과 스핀들 사이를 떼어</b> 보관한다(붙여 두면 온도 변화로 측정면이 눌린다).</li>
+        <li>래칫스톱으로 측정압이 과하지 않게 한다.</li>
+        <li><b>훅(후크) 렌치</b>로 영점을 조정한다.</li>
+        <li>충격을 받으면 측정값이 부정확해진다.</li>
+      </ul>
+      <div class="box gd"><h4>마이크로미터의 종류(참고)</h4><p class="mini">외측 마이크로미터, 내측 마이크로미터(아베의 원리에 맞지 않음), 깊이 마이크로미터, <b>나사 마이크로미터</b>(나사 유효지름 전용, 삼침법과 함께 → 5차시)</p></div>
+    </div>
+  </div>
+  <div class="oneline"><b>정리</b>깨끗이 · 영점 확인 · 같은 온도 · 래칫스톱으로 같은 힘 · 정지 상태 · 떼어서 보관</div>
+</section>
+
+<!-- 4차시 확인 -->
+<section class="page" data-title="4차시 확인 문제">
+  <div class="kicker"><span class="lesson">4차시</span>확인 문제 <span class="pg">기출 연계</span></div>
+  <h2>4차시 확인 문제</h2>
+  <div class="quiz">
+    <div class="q">1. 0.5 mm를 50등분한 마이크로미터의 최소 측정값[mm]은?<br>① 0.001 ② 0.01 ③ 0.005 ④ 0.05
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 마이크로미터의 구성 요소가 아닌 것은?<br>① 앤빌 ② 심블 ③ 스핀들 ④ 깊이바
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 마이크로미터의 측정 원리에 해당하는 기계 요소는?<br>① 키 ② 나사 ③ 링크 ④ 커플링
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">4. 마이크로미터의 심블을 두 바퀴 돌렸을 때 움직이는 길이[mm]는?<br>① 0.2 ② 0.5 ③ 1 ④ 1.5
+      <div class="ox" data-a="3"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 마이크로미터에서 측정 압력을 일정하게 유지시키기 위한 부분은?
+      <button>정답 보기</button><div class="ans">래칫스톱</div></div>
+    <div class="q">6. 탄성 한계 내에서 하중에 비례하여 변형이 생긴다는, 측정력과 관련된 법칙은?
+      <button>정답 보기</button><div class="ans">후크(훅)의 법칙</div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>정리</b>피치 0.5 mm ÷ 50등분 = 0.01 mm. 슬리브(위 1 mm·아래 0.5 mm) + 심블. 래칫스톱으로 같은 힘.</div>
+</section>
+
+<!-- 5차시 표지 -->
+<section class="page sec-cover" data-title="5차시 · 다이얼게이지와 게이지류">
+  <div class="num">5</div>
+  <h1>다이얼게이지와 게이지류</h1>
+  <div class="sub">측정기의 종류(도기·지시 측정기·시준기·게이지) / 다이얼게이지와 편심량<br>하이트게이지·실린더게이지 / 한계게이지·게이지 블록 / 사인바·나사 측정</div>
+</section>
+
+<!-- 측정기 종류 -->
+<section class="page" data-title="측정기의 종류">
+  <div class="kicker"><span class="lesson">5차시</span>측정기 종류 <span class="pg">교재 5쪽 1)</span></div>
+  <h2>측정기는 무엇으로 길이를 나타내는가에 따라 나뉜다</h2>
+  <div class="cols c64">
+    <div class="col">
+      <table class="t" style="font-size:15px">
+        <tr><th>종류</th><th>뜻</th><th>예</th></tr>
+        <tr><td class="c"><b>도기</b><br><span class="mini">선도기</span></td><td>한 도기에 여러 눈금을 새겨 눈금 간격으로 길이를 나타냄</td><td>표준자</td></tr>
+        <tr><td class="c"><span class="mini">단도기</span></td><td><b>양 단면의 간격</b>으로 길이·각도를 나타냄</td><td><b>게이지 블록</b>, 직각자, 각도 게이지, 한계 게이지</td></tr>
+        <tr><td class="c"><b>지시 측정기</b></td><td>눈금(지침)이 움직여 치수를 지시함</td><td>버니어캘리퍼스, 마이크로미터, 다이얼게이지, 테스트 인디케이터</td></tr>
+        <tr><td class="c"><b>시준기</b></td><td>접촉하지 않고 <b>광학적</b>으로 조준하여 측정</td><td>투영기, 공구 현미경, 오토콜리메이터</td></tr>
+        <tr><td class="c"><b>게이지</b></td><td><b>가동 부분이 없는</b> 일체형으로 치수·모양을 구체화</td><td>한계·반지름·드릴·피치·와이어 게이지</td></tr>
+        <tr><td class="c"><b>인디케이터</b></td><td>측정압을 일정하게 하거나 지시에 사용</td><td>다이얼 인디케이터, 다이얼 테스트 인디케이터</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <div class="analogy"><b class="lab">비유</b>시간을 아는 방법에 빗대어 보자. 눈금이 그려진 해시계는 <b>도기</b>, 바늘이 움직이는 손목시계는 <b>지시 측정기</b>, '3분 모래시계'처럼 정해진 양만 알려 주는 것은 <b>게이지</b>이다. 모래시계는 "3분이 지났다/안 지났다"만 알려 줄 뿐 몇 분인지는 모른다.</div>
+      <div class="box gd"><h4>자주 나오는 함정</h4><p class="mini">게이지 블록은 눈금도 바늘도 없는 <b>단도기</b>이다. 그래서 '지시 측정기가 아닌 것'의 정답이 된다.<br>게이지 블록은 <b>길이의 기준</b>으로 쓰는 평행 단도기이다.</p></div>
+      <div class="word"><b>낱말 풀이</b> '도기(度器)'의 度는 '자로 재다'는 뜻이다. 선도기는 '선(눈금)'으로, 단도기는 '끝(端)면'으로 길이를 나타낸다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 다이얼게이지 편심 -->
+<section class="page" data-title="다이얼게이지와 편심량 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">5차시</span>다이얼게이지 · 편심량 <span class="pg">교재 1쪽 · 3쪽 13) · 18쪽</span></div>
+  <h2>바늘이 움직인 폭의 절반이 편심량이다</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="card t"><p class="mini"><b>다이얼게이지</b>: 측정자(스핀들)의 작은 움직임을 기어로 확대하여 바늘로 읽는 <b>비교 측정기</b>이다. 보통 1눈금 = <b>0.01 mm</b>, 긴 바늘 1회전 = 1 mm(짧은 바늘이 회전 수를 표시).</p></div>
+      <div class="formula" style="font-size:22px">편심량 e = 다이얼게이지 전체 움직임 ÷ 2</div>
+      <p class="mini">공작물을 한 바퀴 돌리면 측정점이 회전 중심에서 <b>(R+e)</b>까지 멀어졌다가 <b>(R−e)</b>까지 가까워진다. 그래서 바늘은 <b>2e</b>만큼 움직인다.</p>
+      <div class="box"><h4>다이얼게이지 사용 주의 (교재 3쪽)</h4><p class="mini">온도 0~40 ℃, 습도 30~70 %의 결로 없는 곳에서 쓴다. 바늘·스핀들이 부드럽게 움직이고 눌렀다 떼면 원위치로 오는지 확인한다. 급격한 충격을 주지 않는다. <b>내부 기어에 주유하지 않는다</b>(교재 6쪽).</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-ecc" viewBox="0 0 560 290"></svg>
+        <div class="ctrl"><button data-play class="on">⏸ 정지</button><span class="sp"></span>편심량 e <input type="range" id="ecc-e" min="0" max="3" step="0.05" value="1.5"> <span class="readout" id="ecc-ev"></span></div>
+        <div class="readout" id="ecc-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>회전목마의 말이 중심에서 조금 비켜 서 있으면, 한 바퀴 도는 동안 울타리에 '가장 가까워졌다가 가장 멀어진다'. 가까울 때와 멀 때의 차이는 비켜 선 거리의 <b>두 배</b>이다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 하이트 실린더 -->
+<section class="page" data-title="하이트게이지와 실린더게이지">
+  <div class="kicker"><span class="lesson">5차시</span>하이트게이지 · 실린더게이지 <span class="pg">교재 2~3쪽 11)·12) · 6쪽</span></div>
+  <h2>높이는 하이트게이지로, 구멍 안지름은 실린더게이지로</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="box hl"><h4>하이트게이지 (height gauge)</h4>
+        <svg viewBox="0 0 300 150" style="width:100%"><rect x="20" y="130" width="260" height="14" fill="#5b6876"/><text x="150" y="141" text-anchor="middle" font-size="10" fill="#fff">정반</text>
+          <rect x="40" y="110" width="70" height="20" fill="#0F3057"/><rect x="66" y="10" width="16" height="100" fill="#c9d4df" stroke="#0F3057"/>
+          <rect x="58" y="56" width="34" height="26" fill="#00879E"/><line x1="92" y1="72" x2="150" y2="72" stroke="#0F3057" stroke-width="5"/><path d="M150 69 l14 3 l-14 3z" fill="#c8423b"/>
+          <rect x="170" y="72" width="90" height="58" fill="#FFC145" opacity=".55" stroke="#0F3057"/><text x="215" y="106" text-anchor="middle" font-size="11" fill="#0F3057">공작물</text>
+          <text x="112" y="64" font-size="10.5" fill="#c8423b">스크라이버</text></svg>
+        <ul class="tight" style="font-size:15px">
+          <li><b>정반 위</b>에서 쓴다. 정반의 돌기·상처는 <b>알칸사스 기름숫돌</b>로 제거한다.</li>
+          <li><b>0점</b>을 측정 전에 확인하고, 아니면 측정값을 보정한다.</li>
+          <li>아베의 원리에 위배되므로 <b>스크라이버를 짧게</b> 단다.</li>
+          <li>금긋기 때 고정 나사로 슬라이더를 완전히 조인다. 스크라이버 끝(초경)에 다치지 않게 한다.</li>
+          <li>휨이 생기지 않게 하고 <b>세워서 보관</b>한다.</li>
+        </ul></div>
+    </div>
+    <div class="col">
+      <div class="box"><h4>실린더게이지 (cylinder gauge)</h4>
+        <svg viewBox="0 0 300 150" style="width:100%"><rect x="20" y="40" width="80" height="100" fill="#c9d4df"/><rect x="200" y="40" width="80" height="100" fill="#c9d4df"/>
+          <rect x="140" y="0" width="16" height="110" fill="#5b6876"/><circle cx="148" cy="14" r="14" fill="#fff" stroke="#0F3057" stroke-width="2"/>
+          <line x1="100" y1="110" x2="200" y2="110" stroke="#00879E" stroke-width="7"/><circle cx="100" cy="110" r="5" fill="#c8423b"/><circle cx="200" cy="110" r="5" fill="#c8423b"/>
+          <text x="150" y="132" text-anchor="middle" font-size="11" fill="#0F3057">교환 로드 ↔ 측정자</text><text x="150" y="148" text-anchor="middle" font-size="11" fill="#5b6876">구멍 안지름(내경)</text></svg>
+        <ul class="tight" style="font-size:15px">
+          <li><b>실린더(구멍)의 안지름</b>을 비교 측정한다.</li>
+          <li>A급은 0.001 mm, B급은 0.01 mm 눈금 다이얼게이지를 단다.</li>
+          <li>잴 내경에 맞는 <b>로드</b>를 고르고, 쓰고 나면 로드와 게이지를 <b>분리</b>해 보관한다.</li>
+          <li>앞뒤로 흔들어 바늘이 되돌아오는 점(최소 지시점)을 읽는다.</li>
+        </ul></div>
+      <div class="supp"><b class="lab">보충</b>하이트게이지는 기출에서 그림 이름 묻기 [기출 3-36], 주의사항(학생 기출 복원)으로 나왔다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 한계게이지 -->
+<section class="page" data-title="한계게이지 · 통과측과 정지측 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">5차시</span>한계게이지 <span class="pg">교재 4쪽 6) · 19쪽 · 보충 Ⅰ-1</span></div>
+  <h2>눈금 없이 '합격·불합격'만 판정한다 — 한계게이지</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="card t"><p class="mini">제품이 허용 한계 치수 안에 있는지를 <b>통과측(GO)</b>과 <b>정지측(NO GO)</b>으로 판정한다. <b>통과측은 들어가고 정지측은 들어가지 않으면 합격</b>이다.</p></div>
+      <table class="t" style="font-size:14.5px">
+        <tr><th>게이지</th><th>대상</th><th>통과측</th><th>정지측</th></tr>
+        <tr><td class="c">플러그 게이지</td><td class="c">구멍(암나사)</td><td class="c">최소 허용 치수</td><td class="c">최대 허용 치수</td></tr>
+        <tr><td class="c">링·스냅 게이지</td><td class="c">축(수나사)</td><td class="c">최대 허용 치수</td><td class="c">최소 허용 치수</td></tr>
+      </table>
+      <div class="box"><h4>장점과 단점</h4><p class="mini">판정이 <b>빠르고</b> 숙련이 필요 없어 대량 생산 검사에 알맞다. 그러나 <b>실제 치수는 알 수 없다</b>.<br>사용: 측정면 이외를 잡고, 과도하게 밀어 넣지 않으며, 측정면에 얇은 유막을 남긴다(교재 4쪽).</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-limit" viewBox="0 0 560 260"></svg>
+        <div class="ctrl">구멍 지름 Ø20 H7 (20.000 ~ 20.021) · 실제 구멍 <input type="range" id="lim-d" min="19.990" max="20.030" step="0.001" value="20.010"> <span class="readout" id="lim-dv"></span></div>
+        <div class="readout" id="lim-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>놀이공원의 키 제한 막대와 같다. "이 선보다 커야 탈 수 있다(통과측)"와 "이 선보다 작아야 한다(정지측)"를 둘 다 만족해야 입장이다. 키가 정확히 몇 cm인지는 묻지 않는다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 게이지 블록, 사인바 -->
+<section class="page" data-title="게이지 블록과 사인바 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">5차시</span>게이지 블록 · 사인바 <span class="pg">교재 4쪽 7) · 6쪽 (5) · 보충 Ⅰ-1</span></div>
+  <h2>길이의 기준 게이지 블록, 그것으로 각도를 만드는 사인바</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="box gd"><h4>게이지 블록 사용법</h4><p class="mini">· 먼지가 적고 건조한 실내, 천이나 가죽 위에서 다룬다.<br>· 측정면은 깨끗한 천·가죽으로 <b>지문이 남지 않게</b> 닦고, <b>맨손으로 만지지 않는다</b>.<br>· 필요한 것만 꺼내고 나머지는 바로 상자에 넣는다.<br>· <b>조합 개수를 최소</b>로 한다(밀착 면마다 오차가 생긴다).<br>· 쓰고 나면 세척 후 <b>방청유</b>를 바른다.</p></div>
+      <div class="formula" style="font-size:22px">sin θ = H ÷ L</div>
+      <p class="mini"><b>사인바</b>는 두 롤러 중심 거리 L이 정확한 막대이다. 한쪽 롤러 밑에 높이 H만큼 게이지 블록을 쌓으면 각도 θ가 만들어진다(간접 측정). 45°를 넘으면 오차가 커지므로 <b>45° 이하</b>에서 쓴다.</p>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-sine" viewBox="0 0 560 250"></svg>
+        <div class="ctrl">길이 L <button data-sl="100">100 mm</button><button data-sl="200" class="on">200 mm</button><span class="sp"></span>각도 θ <input type="range" id="sine-a" min="0" max="60" step="0.5" value="30"></div>
+        <div class="readout" id="sine-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>미끄럼틀의 기울기는 사다리 길이와 높이로 정해진다. 사다리 길이(L)를 정확히 알고 높이(H)를 정확히 쌓으면, 각도를 각도기 없이 계산으로 만들 수 있다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5차시 확인 -->
+<section class="page" data-title="5차시 확인 문제">
+  <div class="kicker"><span class="lesson">5차시</span>확인 문제 <span class="pg">기출 연계</span></div>
+  <h2>5차시 확인 문제</h2>
+  <div class="quiz">
+    <div class="q">1. 지시 측정기가 아닌 측정기는?<br>① 버니어캘리퍼스 ② 마이크로미터 ③ 테스트 인디케이터 ④ 게이지 블록
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 통과측과 정지측으로 구성되어 제품의 합불을 신속하게 판단하는 측정기는?<br>① 인디케이터 ② 블록게이지 ③ 한계게이지 ④ 하이트게이지
+      <div class="ox" data-a="3"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 편심 공작물을 한 바퀴 돌렸더니 다이얼게이지가 최소 0.12, 최대 3.12 mm를 가리켰다. 편심량[mm]은?
+      <button>정답 보기</button><div class="ans">(3.12 − 0.12) ÷ 2 = 1.5 mm</div></div>
+    <div class="q">4. 나사 측정기구가 아닌 것은?<br>① 삼침법 ② 다이얼게이지 ③ 나사게이지 ④ 나사 마이크로미터
+      <div class="ox" data-a="2"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 길이 200 mm인 사인바로 30°를 만들려면 블록 높이는 몇 mm인가?
+      <button>정답 보기</button><div class="ans">200 × sin30° = 100 mm</div></div>
+    <div class="q">6. 그림의 측정기(실린더게이지)의 용도는?<br>① 판 두께 ② 축의 단차 ③ 환봉 외경 ④ 실린더 내경
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>정리</b>게이지 블록 = 단도기(지시 측정기 아님) · 편심량 = 읽음 ÷ 2 · 한계게이지 = 통과측 O + 정지측 X → 합격 · 사인바 sinθ = H/L</div>
+</section>
+
+<!-- 6차시 표지 -->
+<section class="page sec-cover" data-title="6차시 · 측정기 관리와 교정">
+  <div class="num">6</div>
+  <h1>측정기 관리와 교정</h1>
+  <div class="sub">교정의 뜻과 목적, 측정의 소급성 / 교정 주기에 영향을 주는 요인<br>측정 환경과 열팽창 / 측정기별 취급·보관 / 베셀점 / 단원 종합 문제</div>
+</section>
+
+<!-- 교정 -->
+<section class="page" data-title="교정의 뜻과 목적">
+  <div class="kicker"><span class="lesson">6차시</span>측정기 교정 <span class="pg">교재 3쪽 1) · 6쪽 6) · 7쪽 8)</span></div>
+  <h2>측정기도 '검사'를 받는다 — 교정(calibration)</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="card t"><p><b>교정</b>이란 측정기의 정밀도와 정확도를 지속적으로 유지하기 위해 <b>상위 표준과 주기적으로 비교</b>하는 것을 말한다. 반드시 국가측정표준을 토대로 <b>측정의 소급성</b>을 확보해야 측정 결과가 유효하다.</p></div>
+      <div class="box hl"><h4>교정의 목적 (교재 3쪽)</h4><p class="mini">① 측정기의 <b>정밀 정확도를 지속적으로 유지</b>할 수 있다.<br>② 측정기의 <b>사용 여부</b> 및 <b>제품의 합격 여부</b>를 판단할 수 있다.<br>③ 법령의 <b>측정 소급성 확보</b> 요구에 대응할 수 있다.<br>④ 각종 <b>시스템 인증</b>의 요구사항을 만족할 수 있다.</p></div>
+      <div class="box gd"><h4>함정 보기</h4><p class="mini">"제품의 생산 단가를 높일 수 있다"는 교정의 목적이 아니다.</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox"><svg viewBox="0 0 520 250">
+        <g font-size="14" text-anchor="middle" font-weight="700">
+          <rect x="140" y="10" width="240" height="40" rx="8" fill="#0F3057"/><text x="260" y="35" fill="#FFC145">국가측정표준(한국표준과학연구원)</text>
+          <rect x="140" y="78" width="240" height="40" rx="8" fill="#00879E"/><text x="260" y="103" fill="#fff">공인 교정 기관의 표준기</text>
+          <rect x="140" y="146" width="240" height="40" rx="8" fill="#e2f3f5" stroke="#00879E" stroke-width="2"/><text x="260" y="171" fill="#0F3057">회사의 사내 표준(게이지 블록)</text>
+          <rect x="140" y="210" width="240" height="36" rx="8" fill="#fff4d6" stroke="#FFC145" stroke-width="2"/><text x="260" y="233" fill="#0F3057">실습실 마이크로미터</text>
+        </g>
+        <g stroke="#0F3057" stroke-width="2.5" marker-end="url(#ahn)"><line x1="260" y1="52" x2="260" y2="74"/><line x1="260" y1="120" x2="260" y2="142"/><line x1="260" y1="188" x2="260" y2="206"/></g>
+        <text x="272" y="68" font-size="12" fill="#5b6876">비교·교정</text><text x="272" y="136" font-size="12" fill="#5b6876">비교·교정</text><text x="272" y="202" font-size="12" fill="#5b6876">비교·교정</text>
+        <text x="20" y="120" font-size="13" fill="#c8423b" font-weight="700">소급성</text><text x="20" y="140" font-size="12" fill="#5b6876">끊어지지 않는</text><text x="20" y="157" font-size="12" fill="#5b6876">비교의 사슬</text>
+        <path d="M80 230 C50 180 50 70 132 30" fill="none" stroke="#c8423b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+      </svg></div>
+      <div class="analogy"><b class="lab">비유</b>교실 시계가 맞는지는 휴대전화 시각과 비교하고, 휴대전화는 통신사 시각, 통신사는 국가 표준시와 맞춘다. 이렇게 맨 위 표준까지 <b>끊기지 않고 거슬러 올라갈 수 있는 것</b>이 소급성이다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 열팽창 -->
+<section class="page" data-title="측정 환경과 열팽창 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">6차시</span>측정 환경 <span class="pg">교재 2쪽 8) · 3쪽 3) · 7쪽 9)~11)</span></div>
+  <h2>손에 쥐기만 해도 측정값이 변한다 — 온도와 열팽창</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="formula" style="font-size:22px">늘어난 길이 ΔL = α × L × ΔT</div>
+      <p class="mini">α: 선팽창 계수(강철 약 11.5 × 10⁻⁶/℃), L: 길이, ΔT: 온도 차이. 길이 측정의 <b>표준 온도는 20 ℃</b>이다.</p>
+      <div class="box hl"><h4>그래서 교재는 이렇게 쓰라고 한다</h4><p class="mini">· 측정실은 적정한 <b>표준 온도와 습도</b>를 유지한다.<br>· 체온이 전해지지 않도록 <b>면장갑</b>을 착용한다.<br>· 교정 전에 장비를 미리 옮겨 <b>열평형</b> 상태를 이루게 한다.<br>· 전기적 측정기는 <b>30분 전</b>에 가동한다.<br>· 내부 교정 환경 요소: 온도·습도·먼지·전자기장·접지 저항·진동·소음</p></div>
+      <div class="box"><h4>측정실 등급 (교재 7쪽)</h4><p class="mini">A급: 환경 기준을 엄격하게 적용 / B·C급: 느슨하게 적용</p></div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-therm" viewBox="0 0 560 230"></svg>
+        <div class="ctrl">블록 길이 <button data-tl="25">25 mm</button><button data-tl="100" class="on">100 mm</button><button data-tl="200">200 mm</button>
+          <span class="sp"></span>온도 <input type="range" id="th-t" min="15" max="35" step="0.5" value="28"></div>
+        <div class="readout" id="th-out"></div>
+      </div>
+      <div class="analogy"><b class="lab">비유</b>여름에 철길 이음매 사이에 틈을 두는 것은 레일이 늘어나기 때문이다. 100 mm 강철 블록도 손에 쥐어 8 ℃만 올라도 약 0.009 mm 늘어난다. 마이크로미터 1눈금(0.01 mm)과 맞먹는 크기이다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 취급 보관 -->
+<section class="page" data-title="측정기별 취급·보관 정리">
+  <div class="kicker"><span class="lesson">6차시</span>측정기별 취급 <span class="pg">교재 6쪽 5) · 7쪽 11)</span></div>
+  <h2>측정기별 취급·보관 한눈에 보기</h2>
+  <table class="t" style="font-size:15px">
+    <tr><th style="width:150px">측정기</th><th>취급·보관 핵심</th><th style="width:250px">교정할 때</th></tr>
+    <tr><td class="c"><b>버니어캘리퍼스</b></td><td>힘을 지나치게 주지 않는다 · 조 사용 부분별 보정값 적용 · 조 사이를 <b>약간 띄워</b> 케이스에 넣거나 평평하게 눕혀 보관</td><td>슬라이더가 헐거우면 <b>판 스프링 조절 나사</b>로 탄성 조정</td></tr>
+    <tr><td class="c"><b>마이크로미터</b></td><td>청결 유지 · <b>앤빌과 스핀들을 떼어</b> 보관 · 래칫스톱으로 측정압 일정 · 후크 렌치로 영점 조정 · 충격 주의</td><td>측정면·손잡이·래칫스톱 손상 확인</td></tr>
+    <tr><td class="c"><b>다이얼게이지</b></td><td><b>내부 기어에 주유하지 않는다</b> · 쓰고 나면 부착물과 분리 · 지나친 측정압 금지</td><td>다이얼게이지 시험기, 정밀 정반 위 정렬, 알코올로 세척</td></tr>
+    <tr><td class="c"><b>실린더게이지</b></td><td>충격 주의 · 내경에 맞는 로드 선택 · 로드와 게이지 <b>분리 보관</b></td><td>표준기와 함께 정밀 정반 위에 정렬</td></tr>
+    <tr><td class="c"><b>게이지 블록</b></td><td><b>조합 개수 최소</b> · 돌기는 전용 연마석으로 제거 · 두께 고려해 조합 · <b>맨손 금지</b> · 부속물 분실 주의</td><td>—</td></tr>
+    <tr><td class="c"><b>높이(하이트) 게이지</b></td><td><b>정반 위</b>에서 사용 · 휨 주의 · <b>세워서 보관</b></td><td>—</td></tr>
+  </table>
+  <div class="supp" style="margin-top:10px"><b class="lab">공통</b>교정 전에는 교정 순서를 꼼꼼히 파악하고, 장비를 미리 옮겨 <b>열평형</b>을 이루게 하며, 세척제로 닦고, <b>장갑</b>을 끼고 다룬다(체온 차단).</div>
+  <div class="oneline"><b>외우는 법</b>마이크로는 '떼어서', 다이얼은 '기름 금지', 실린더는 '분리', 블록은 '최소·맨손 금지', 하이트는 '세워서'</div>
+</section>
+
+<!-- 베셀점 -->
+<section class="page" data-title="베셀점 · 긴 측정기를 받치는 위치 (움직이는 그림)">
+  <div class="kicker"><span class="lesson">6차시</span>베셀점 <span class="pg">보충 Ⅰ-1</span></div>
+  <h2>긴 자를 어디에 받쳐야 길이가 가장 덜 변하는가 — 베셀점</h2>
+  <div class="cols c46">
+    <div class="col" style="gap:8px">
+      <div class="card t"><p class="mini"><b>베셀점(Bessel point)</b>: 긴 기준봉(표준자·게이지)을 두 점으로 받칠 때, 자기 무게로 휘어서 생기는 <b>전체 길이 변화가 가장 작아지는</b> 지지점이다. 양 끝에서 각각 <b>약 0.2203 L</b> 위치이다.</p></div>
+      <div class="box"><h4>에어리점 (Airy point) · 참고</h4><p class="mini">양 끝면이 <b>평행</b>을 유지하도록 받치는 점으로, 양 끝에서 약 <b>0.2113 L</b>이다. 끝면으로 길이를 나타내는 단도기(긴 게이지 블록)에 쓴다.</p></div>
+      <div class="analogy"><b class="lab">비유</b>긴 장대를 두 사람이 메고 갈 때, 맨 끝을 잡으면 가운데가 축 처지고, 너무 안쪽을 잡으면 양 끝이 처진다. 처짐이 고르게 나뉘는 '알맞은 자리'가 있다.</div>
+    </div>
+    <div class="col">
+      <div class="wbox">
+        <svg id="w-bessel" viewBox="0 0 560 230"></svg>
+        <div class="ctrl">지지점 위치 a/L <input type="range" id="bs-a" min="0.02" max="0.40" step="0.005" value="0.05" style="width:220px"> <button id="bs-b">베셀점으로</button><button id="bs-y">에어리점으로</button></div>
+        <div class="readout" id="bs-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 단원 종합 -->
+<section class="page" data-title="Ⅰ단원 종합 문제">
+  <div class="kicker"><span class="lesson">6차시</span>단원 종합 <span class="pg">기출 연계</span></div>
+  <h2>Ⅰ. 측정 종합 문제</h2>
+  <div class="quiz" style="font-size:15.5px;gap:6px 26px">
+    <div class="q">1. 측정기를 교정하는 목적으로 옳지 않은 것은?<br>① 정확도 유지 ② 사용·합격 여부 판단 ③ 시스템 인증 만족 ④ 생산 단가를 높임
+      <div class="ox" data-a="4"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">2. 측정 오차를 최소로 하기 위한 지지점은?<br>① 베셀점 ② 기준점 ③ 중립점 ④ 정밀점
+      <div class="ox" data-a="1"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">3. 다이얼게이지의 내부 기어에는 정기적으로 주유한다.
+      <div class="ox" data-a="2"><button>O</button><button>X</button></div><div class="fb"></div></div>
+    <div class="q">4. 길이의 기준으로 사용되는 평행 단도기는?<br>① 사인바 ② 3차원 측정기 ③ 게이지 블록 ④ 한계게이지
+      <div class="ox" data-a="3"><button>①</button><button>②</button><button>③</button><button>④</button></div><div class="fb"></div></div>
+    <div class="q">5. 측정자의 눈의 위치에 따라 눈금의 읽음값이 달라지는 오차는?
+      <button>정답 보기</button><div class="ans">시차</div></div>
+    <div class="q">6. 조건이나 규정에 만족하는지를 결정하여 합격·불합격을 구별하는 행위는?
+      <button>정답 보기</button><div class="ans">검사</div></div>
+    <div class="q">7. 강철 블록 100 mm가 20 ℃에서 30 ℃로 올랐다. 늘어난 길이[μm]는? (α = 11.5 × 10⁻⁶/℃)
+      <button>정답 보기</button><div class="ans">11.5×10⁻⁶ × 100 × 10 = 0.0115 mm ≒ 11.5 μm</div></div>
+    <div class="q">8. 다이얼게이지 0.01 mm 눈금으로 5눈금 움직였다. 이동 거리[mm]는?
+      <button>정답 보기</button><div class="ans">0.05 mm</div></div>
+  </div>
+  <div class="oneline" style="margin-top:auto"><b>단원 정리</b>방식(편위·영위) → 오차(계통·우연·과실) → 측정기(버니어·마이크로·다이얼·게이지) → 관리(교정·온도·보관)</div>
+</section>
+
+
+</div></div>
+<div id="nav">
+  <button id="prev">◀ 이전</button><span id="count"></span><button id="next">다음 ▶</button>
+  <select id="toc"></select>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const C={navy:'#0F3057',teal:'#00879E',gold:'#FFC145',ink:'#1d2733',muted:'#5b6876',soft:'#e6ecf3',tsoft:'#e2f3f5',gsoft:'#fff4d6',red:'#c8423b',blue:'#2f6fd1',line:'#d6dee6'};
+function el(tag,at,parent){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(parent)parent.appendChild(e);return e;}
+function txt(parent,x,y,s,at){const t=el('text',Object.assign({x,y,'font-size':14,fill:C.ink},at||{}),parent);t.textContent=s;return t;}
+function set(e,at){for(const k in at)e.setAttribute(k,at[k]);return e;}
+function $(id){return document.getElementById(id);}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function fx(v,n){return (+v).toFixed(n);}
+const deg=Math.PI/180;
+/* 결정적 난수(쪽을 다시 열어도 같은 모양) */
+let seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+function gauss(){return (rnd()+rnd()+rnd()+rnd()-2)/0.58;}
+/* 축 그리기 */
+function axes(g,x0,y0,w,h,xl,yl){
+  el('line',{x1:x0,y1:y0,x2:x0+w,y2:y0,stroke:C.navy,'stroke-width':2,'marker-end':'url(#ahn)'},g);
+  el('line',{x1:x0,y1:y0,x2:x0,y2:y0-h,stroke:C.navy,'stroke-width':2,'marker-end':'url(#ahn)'},g);
+  if(xl)txt(g,x0+w,y0+20,xl,{'text-anchor':'end','font-size':13,fill:C.muted});
+  if(yl)txt(g,x0+6,y0-h+4,yl,{'font-size':13,fill:C.muted});
+}
+function pathOf(pts){return pts.map((p,i)=>(i?'L':'M')+fx(p[0],1)+' '+fx(p[1],1)).join(' ');}
+
+/* ---------- 페이지 넘김 ---------- */
+const allPages=[...document.querySelectorAll('.page')];
+let teacher=false;
+let cur=0;
+function visiblePages(){return allPages.filter(p=>teacher||!p.classList.contains('teacher-only'));}
+function buildToc(){const toc=$('toc');toc.innerHTML='';visiblePages().forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+p.dataset.title;toc.appendChild(o);});}
+function show(i){
+  const vp=visiblePages();cur=Math.max(0,Math.min(vp.length-1,i));
+  allPages.forEach(p=>p.classList.remove('on'));const p=vp[cur];p.classList.add('on');
+  $('count').textContent=(cur+1)+' / '+vp.length;
+  $('toc').value=cur;
+  try{if(location.protocol!=='data:')history.replaceState(null,'','#p'+(cur+1));}catch(e){}
+}
+function applyMode(){
+  document.body.classList.toggle('teacher',teacher);
+  const curPage=visiblePages()[cur];buildToc();
+  let idx=visiblePages().indexOf(curPage);if(idx<0)idx=visiblePages().length-1;show(idx);fit();
+}
+$('prev').onclick=()=>show(cur-1);
+$('next').onclick=()=>show(cur+1);
+$('toc').onchange=e=>show(+e.target.value);
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT')return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1);}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1);}
+});
+function fit(){const vp=$('viewport');const s=Math.min(vp.clientWidth/1300,vp.clientHeight/740);$('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);
+document.querySelectorAll('.q button').forEach(b=>b.onclick=()=>{const a=b.parentElement.querySelector('.ans');a.style.display=a.style.display==='block'?'none':'block';});
+
+/* ---------- 위젯 공통 ---------- */
+const widgets=[];
+function widget(svgId,obj){const svg=$(svgId);obj.svg=svg;obj.box=svg.closest('.wbox')||svg.parentElement;obj.page=svg.closest('.page');
+  if(obj.playing===undefined)obj.playing=true;obj.init();obj.draw();
+  const pb=obj.box.querySelector('[data-play]');if(pb)pb.onclick=()=>{obj.playing=!obj.playing;pb.textContent=obj.playing?'⏸ 정지':'▶ 재생';pb.classList.toggle('on',obj.playing);};
+  if(obj.step)widgets.push(obj);return obj;}
+function group(box,attr,cb){const bs=[...box.querySelectorAll('['+attr+']')];bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b.getAttribute(attr));});}
+function slider(id,cb){const s=$(id);s.addEventListener('input',()=>cb(+s.value));return +s.value;}
+let last=performance.now();
+function safe(name,fn){try{fn();}catch(e){console.error('위젯 오류: '+name,e);}}
+
+
+const minis=[];
+/* ================= 공통: O·X/보기 문제, 분류 활동 ================= */
+safe('ox',()=>{document.querySelectorAll('.ox').forEach(box=>{
+  const a=+box.dataset.a;const bs=[...box.querySelectorAll('button')];const fb=box.parentElement.querySelector('.fb');
+  bs.forEach((b,i)=>b.onclick=()=>{bs.forEach(x=>x.className='');
+    if(i+1===a){b.className='right';if(fb)fb.textContent='정답이다.';}
+    else{b.className='wrong';if(fb)fb.textContent='다시 생각해 보자.';}});});});
+
+/* 분류 활동: 컨테이너 id, 종류 단추 속성, 채점·초기화 단추 */
+function sorter(id,attr){
+  const box=$(id);const page=box.closest('.page');const items=[...box.querySelectorAll('button')];
+  let curC='1';const cls={'1':'c1','2':'c2','3':'c3'};
+  group(page,attr,v=>curC=v);
+  items.forEach(b=>b.onclick=()=>{b.className=cls[curC];b.dataset.pick=curC;});
+  $(id+'-chk').onclick=()=>{let ok=0,n=0;items.forEach(b=>{if(!b.dataset.pick)return;n++;
+    if(b.dataset.pick===b.dataset.c)ok++;else b.className='bad';});
+    $(id+'-out').textContent=n?('고른 '+n+'개 중 '+ok+'개 정답 (전체 '+items.length+'개)'):'먼저 상황을 눌러 분류한다.';};
+  $(id+'-rst').onclick=()=>{items.forEach(b=>{b.className='';delete b.dataset.pick;});$(id+'-out').textContent='';};
+}
+
+/* ================= 1차시 ================= */
+safe('sort1',()=>sorter('sort1','data-cls'));
+
+/* 측정 방식: 편위법·영위법·보상법 */
+safe('meth',()=>widget('w-meth',{mode:'dev',m:430,t:0,w:[],wi:0,tilt:0,
+  init(){const g=this.svg;this.g=el('g',{},g);
+    group(this.box,'data-mm',v=>{this.mode=v;this.reset();});
+    slider('meth-m',v=>{this.m=v;this.reset();});this.reset();},
+  reset(){this.t=0;this.w=[];this.wi=0;
+    // 영위법: 큰 추부터 하나씩 올려 보고, 넘치면 내린다
+    this.seq=[];let rest=this.m;[500,200,200,100,50,20,10,10].forEach(x=>{this.seq.push([x,x<=rest]);if(x<=rest)rest-=x;});
+    this.trial=null;this.timer=0;},
+  step(dt){if(this.mode!=='zero')return;this.timer+=dt;
+    if(this.timer>0.6&&this.wi<this.seq.length){this.timer=0;const [x,keep]=this.seq[this.wi];
+      if(this.trial===null){this.trial=x;}else{if(this.seq[this.wi][1])this.w.push(this.trial);this.trial=null;this.wi++;}}},
+  draw(){const g=this.g;g.innerHTML='';const m=this.m,out=$('meth-out');
+    if(this.mode==='dev'){
+      // 용수철 저울: 바늘 눈금판
+      el('line',{x1:280,y1:10,x2:280,y2:40,stroke:C.navy,'stroke-width':3},g);
+      const cx=280,cy=120,R=80;el('circle',{cx,cy,r:R,fill:'#fff',stroke:C.navy,'stroke-width':3},g);
+      for(let i=0;i<=10;i++){const a=(-210+i*24)*deg;el('line',{x1:cx+Math.cos(a)*(R-4),y1:cy+Math.sin(a)*(R-4),x2:cx+Math.cos(a)*(R-(i%5?12:20)),y2:cy+Math.sin(a)*(R-(i%5?12:20)),stroke:C.navy,'stroke-width':2},g);
+        if(i%2===0)txt(g,cx+Math.cos(a)*(R-34),cy+Math.sin(a)*(R-34)+5,(i*100)+'',{'text-anchor':'middle','font-size':12,fill:C.muted});}
+      const a=(-210+m/1000*240)*deg;el('line',{x1:cx,y1:cy,x2:cx+Math.cos(a)*(R-16),y2:cy+Math.sin(a)*(R-16),stroke:C.red,'stroke-width':4,'stroke-linecap':'round'},g);
+      el('circle',{cx,cy,r:6,fill:C.navy},g);txt(g,cx,cy+40,'g',{'text-anchor':'middle',fill:C.muted});
+      el('line',{x1:280,y1:200,x2:280,y2:222,stroke:C.navy,'stroke-width':3},g);
+      const s=24+m/900*30;el('rect',{x:280-s/2,y:222,width:s,height:s*0.8,rx:4,fill:C.teal},g);
+      txt(g,280,222+s*0.8+18,'물체 '+m+' g',{'text-anchor':'middle','font-weight':700,fill:C.navy});
+      txt(g,40,40,'편위법',{'font-size':18,'font-weight':700,fill:C.teal});
+      txt(g,40,64,'무게만큼 바늘이 치우친다',{'font-size':13,fill:C.muted});txt(g,40,84,'→ 눈금을 바로 읽는다',{'font-size':13,fill:C.muted});
+      out.textContent='바늘이 약 '+m+' g을 가리킨다. 올리기만 하면 바로 읽으므로 빠르고 간단하다.';
+    }else{
+      const isC=this.mode==='comp';
+      const W=isC?400:this.w.reduce((a,b)=>a+b,0)+(this.trial||0);
+      const diff=m-W;const tilt=clamp(diff/40,-1,1)*12;
+      const cx=280,cy=90;el('polygon',{points:`${cx-16},250 ${cx+16},250 ${cx},${cy+6}`,fill:C.navy},g);
+      el('rect',{x:cx-90,y:250,width:180,height:10,fill:C.navy},g);
+      const gB=el('g',{transform:`rotate(${-tilt} ${cx} ${cy})`},g);
+      el('line',{x1:cx-170,y1:cy,x2:cx+170,y2:cy,stroke:C.navy,'stroke-width':6,'stroke-linecap':'round'},gB);
+      el('line',{x1:cx,y1:cy,x2:cx,y2:cy-46,stroke:C.red,'stroke-width':3},gB);
+      el('path',{d:`M${cx-30} ${cy-58} A60 60 0 0 1 ${cx+30} ${cy-58}`,fill:'none',stroke:C.muted,'stroke-width':1.5},g);
+      txt(g,cx,cy-64,'0',{'text-anchor':'middle','font-size':12,fill:C.muted});
+      const L=[cx-170,cy],Rr=[cx+170,cy];const rot=(p)=>{const r=-tilt*deg;return [cx+(p[0]-cx)*Math.cos(r)-(p[1]-cy)*Math.sin(r),cy+(p[0]-cx)*Math.sin(r)+(p[1]-cy)*Math.cos(r)];};
+      const pl=rot(L),pr=rot(Rr);
+      [[pl,'물체 '+m+' g',C.teal],[pr,'',C.gold]].forEach(([p,lab,col],k)=>{
+        el('line',{x1:p[0],y1:p[1],x2:p[0],y2:p[1]+70,stroke:C.muted,'stroke-width':1.5},g);
+        el('path',{d:`M${p[0]-50} ${p[1]+70} q50 22 100 0`,fill:C.soft,stroke:C.navy,'stroke-width':2},g);
+        if(k===0){const s=26+m/900*26;el('rect',{x:p[0]-s/2,y:p[1]+70-s,width:s,height:s,rx:4,fill:col},g);txt(g,p[0],p[1]+112,lab,{'text-anchor':'middle','font-weight':700,fill:C.navy});}
+        else{const ws=isC?[400]:this.w.concat(this.trial?[this.trial]:[]);let x=p[0]-44;
+          ws.forEach((v,i)=>{const h=10+Math.sqrt(v)*0.9;el('rect',{x,y:p[1]+70-h,width:16,height:h,rx:2,fill:(i===ws.length-1&&this.trial&&!isC)?C.red:C.gold,stroke:C.navy},g);x+=18;});
+          txt(g,p[0],p[1]+112,(isC?'기준추 ':'추 합계 ')+W+' g',{'text-anchor':'middle','font-weight':700,fill:C.navy});}
+      });
+      if(isC){// 작은 편위 눈금판
+        const dx=470,dy=210,R=36;el('circle',{cx:dx,cy:dy,r:R,fill:'#fff',stroke:C.teal,'stroke-width':2.5},g);
+        for(let i=-5;i<=5;i++){const a=(-90+i*14)*deg;el('line',{x1:dx+Math.cos(a)*(R-3),y1:dy+Math.sin(a)*(R-3),x2:dx+Math.cos(a)*(R-(i%5?8:13)),y2:dy+Math.sin(a)*(R-(i%5?8:13)),stroke:C.navy},g);}
+        const a=(-90+clamp(diff,-100,100)/100*70)*deg;el('line',{x1:dx,y1:dy,x2:dx+Math.cos(a)*(R-8),y2:dy+Math.sin(a)*(R-8),stroke:C.red,'stroke-width':3},g);
+        txt(g,dx,dy+R+16,'차이 눈금',{'text-anchor':'middle','font-size':12,fill:C.teal});
+        txt(g,40,40,'보상법',{'font-size':18,'font-weight':700,fill:C.teal});
+        txt(g,40,64,'기준량을 먼저 빼고',{'font-size':13,fill:C.muted});txt(g,40,84,'남은 차이만 편위로 읽는다',{'font-size':13,fill:C.muted});
+        out.textContent='기준추 400 g으로 대부분을 상쇄하고, 남은 차이 '+(diff>=0?'+':'')+diff+' g만 작은 눈금으로 읽는다 → 측정값 '+m+' g.';
+      }else{
+        txt(g,40,40,'영위법',{'font-size':18,'font-weight':700,fill:C.teal});
+        txt(g,40,64,'추를 더하고 빼며',{'font-size':13,fill:C.muted});txt(g,40,84,'바늘을 0(수평)에 맞춘다',{'font-size':13,fill:C.muted});
+        const done=this.wi>=this.seq.length;
+        out.textContent=done?('균형! 바늘이 0이다 → 측정값 = 추의 합계 '+W+' g (남은 차이 '+(m-W)+' g은 가장 작은 추보다 작다)')
+          :(this.trial?('빨간 추 '+this.trial+' g을 올려 본다 → '+(m-W>=0?'아직 물체 쪽이 무겁다':'추 쪽이 무겁다, 내린다')):'추를 고르는 중...');
+      }
+    }
+  }}));
+
+/* ================= 2차시 ================= */
+safe('sort2',()=>sorter('sort2','data-ecls'));
+
+/* 과녁: 정확도·정밀도 */
+safe('tgt',()=>widget('w-tgt',{bias:0,spr:0,shots:[],queue:10,t:0,
+  init(){const g=this.svg;const cx=200,cy=165;this.cx=cx;this.cy=cy;
+    [150,120,90,60,30].forEach((r,i)=>el('circle',{cx,cy,r,fill:i%2?'#fff':C.tsoft,stroke:C.teal,'stroke-width':1.5},g));
+    el('circle',{cx,cy,r:8,fill:C.gold,stroke:C.navy},g);
+    txt(g,cx,cy-158,'참값(과녁 중심)',{'text-anchor':'middle','font-size':12,fill:C.muted});
+    this.sg=el('g',{},g);this.mean=el('g',{},g);
+    el('path',{d:'M-10 0H10M0 -10V10',stroke:C.red,'stroke-width':3},this.mean);el('circle',{r:12,fill:'none',stroke:C.red,'stroke-width':2},this.mean);
+    this.panel=el('g',{},g);
+    group(this.box,'data-tb',v=>{this.bias=+v;this.clear();});
+    group(this.box,'data-ts',v=>{this.spr=+v;this.clear();});
+    $('tgt-more').onclick=()=>{this.queue+=10;};$('tgt-clr').onclick=()=>this.clear();},
+  clear(){this.shots=[];this.queue=10;seed=11;},
+  step(dt){this.t+=dt;if(this.queue>0&&this.t>0.12){this.t=0;this.queue--;
+    const bx=this.bias?48:0,by=this.bias?-36:0,s=this.spr?34:7;
+    this.shots.push([bx+gauss()*s,by+gauss()*s]);}},
+  draw(){const g=this.sg;g.innerHTML='';const cx=this.cx,cy=this.cy;
+    this.shots.forEach((p,i)=>el('circle',{cx:cx+p[0],cy:cy+p[1],r:5,fill:i===this.shots.length-1?C.red:C.navy,opacity:.85},g));
+    const n=this.shots.length;let mx=0,my=0;this.shots.forEach(p=>{mx+=p[0];my+=p[1];});if(n){mx/=n;my/=n;}
+    this.mean.setAttribute('transform',`translate(${cx+mx},${cy+my})`);this.mean.style.display=n?'':'none';
+    let sd=0;this.shots.forEach(p=>{sd+=(p[0]-mx)**2+(p[1]-my)**2;});sd=n>1?Math.sqrt(sd/n):0;
+    const off=Math.hypot(mx,my);
+    const acc=this.bias?'낮다':'높다',pre=this.spr?'낮다':'높다';
+    const P=this.panel;P.innerHTML='';
+    txt(P,380,60,'발사 수: '+n,{'font-size':15,fill:C.navy,'font-weight':700});
+    txt(P,380,95,'평균의 치우침',{'font-size':13,fill:C.muted});txt(P,380,118,fx(off/10,1)+' 칸',{'font-size':18,fill:C.red,'font-weight':700});
+    txt(P,380,150,'흩어짐(표준편차)',{'font-size':13,fill:C.muted});txt(P,380,173,fx(sd/10,1)+' 칸',{'font-size':18,fill:C.navy,'font-weight':700});
+    el('rect',{x:372,y:200,width:170,height:44,rx:8,fill:this.bias?'#fbe3e1':C.tsoft},P);txt(P,457,228,'정확도 '+acc,{'text-anchor':'middle','font-size':17,'font-weight':700,fill:this.bias?C.red:C.teal});
+    el('rect',{x:372,y:252,width:170,height:44,rx:8,fill:this.spr?'#fbe3e1':C.gsoft},P);txt(P,457,280,'정밀도 '+pre,{'text-anchor':'middle','font-size':17,'font-weight':700,fill:this.spr?C.red:'#9a7400'});
+    txt(P,380,318,'+ 표시 = 평균 위치',{'font-size':12,fill:C.red});
+    $('tgt-out').textContent=(this.bias?'평균이 중심에서 벗어나 있다 → 계통 오차(치우침), 정확도가 낮다. ':'평균이 중심 근처이다 → 정확도가 높다. ')+(this.spr?'점이 넓게 흩어진다 → 우연 오차, 정밀도가 낮다.':'점이 좁게 모인다 → 정밀도가 높다.');
+  }}));
+
+/* ================= 3차시 ================= */
+const VT={a:{main:1,n:20,span:19,px:14,lab:2,lname:i=>''+(i/2),c:0.05,dig:2},
+          b:{main:1,n:50,span:49,px:8.6,lab:5,lname:i=>''+(i/5),c:0.02,dig:2},
+          c:{main:0.5,n:25,span:12,px:17,lab:5,lname:i=>''+(i/5*10),c:0.02,dig:2}};
+/* 버니어 눈금 그리기: g(그룹), v(측정값 mm), t(형식), show(맞는 선 강조) */
+function drawVernier(g,v,t,show){g.innerHTML='';const T=VT[t];const X0=24,YB=118;
+  const m0=Math.max(0,Math.floor(v/10)*10-(v%10<3?10:0)+ (v%10>=3?0:0));
+  const start=Math.max(0,Math.floor(v)-4);const xm=mm=>X0+(mm-start)*T.px;const xmax=540;
+  el('rect',{x:10,y:40,width:540,height:YB-40,fill:'#eef2f6',stroke:C.navy,'stroke-width':1.5},g);
+  el('rect',{x:xm(v)-6,y:YB,width:Math.min(T.span*T.px+20,540-(xm(v)-6)),height:70,fill:C.tsoft,stroke:C.teal,'stroke-width':1.5},g);
+  // 어미자
+  for(let mm=start;xm(mm)<=xmax;mm=+(mm+T.main).toFixed(3)){const x=xm(mm);const isInt=Math.abs(mm-Math.round(mm))<1e-6;
+    const L=Math.abs(mm%10)<1e-6?28:(isInt&&Math.round(mm)%5===0?20:(isInt?14:8));
+    el('line',{x1:x,y1:YB,x2:x,y2:YB-L,stroke:C.navy,'stroke-width':isInt?1.3:0.9},g);
+    if(Math.abs(mm%10)<1e-6)txt(g,x,YB-34,''+mm,{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.navy});}
+  txt(g,16,34,'어미자(mm)',{'font-size':12,fill:C.muted});
+  // 아들자
+  const sp=T.span/T.n;const r=+(v-Math.floor(v/T.main+1e-9)*T.main).toFixed(4);const k=Math.round(r/T.c);
+  for(let i=0;i<=T.n;i++){const x=xm(v+i*sp);if(x>xmax+4)break;const lab=i%T.lab===0;
+    const hl=show&&i===k;
+    el('line',{x1:x,y1:YB,x2:x,y2:YB+(lab?22:13),stroke:hl?C.red:C.teal,'stroke-width':hl?3:1.3},g);
+    if(lab)txt(g,x,YB+38,T.lname(i),{'text-anchor':'middle','font-size':13,fill:C.teal,'font-weight':700});}
+  txt(g,xm(v),YB+62,'아들자 0',{'text-anchor':'middle','font-size':12,fill:C.red});
+  el('path',{d:`M${xm(v)} ${YB+48} l-5 -7 h10z`,fill:C.red},g);
+  if(show){const xa=xm(v+k*sp);el('line',{x1:xa,y1:YB-30,x2:xa,y2:YB+26,stroke:C.gold,'stroke-width':6,opacity:.55},g);
+    txt(g,Math.min(xa,500),YB-46,'일직선!',{'text-anchor':'middle','font-size':13,'font-weight':700,fill:'#9a7400'});}
+  return {k,base:+(v-r).toFixed(3),r};
+}
+
+/* 원리 */
+safe('vp',()=>widget('w-vp',{playing:false,t:'a',v:0.35,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-vt',x=>{this.t=x;this.draw();});slider('vp-v',x=>{this.v=x;this.draw();});},
+  draw(){const T=VT[this.t];const v=+(Math.round(this.v/T.c)*T.c).toFixed(3);const R=drawVernier(this.g,v+10,this.t,true);
+    $('vp-out').textContent=`어미자 ${fx(R.base,1)} mm + 맞는 아들자 ${R.k}번째 눈금 × ${T.c} = ${fx(R.k*T.c,2)} mm → 측정값 ${fx(v+10,2)} mm  (아들자 1눈금 = ${T.span}÷${T.n} = ${fx(T.span/T.n,3)} mm)`;}}));
+
+/* 읽기 연습 */
+safe('vd',()=>widget('w-vd',{playing:false,t:'a',v:23.45,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-vd',x=>{this.t=x;this.newq();});
+    $('vd-new').onclick=()=>this.newq();$('vd-show').onclick=()=>{this.show=true;this.draw();$('vd-out').textContent='정답: '+fx(this.v,2)+' mm';};
+    $('vd-chk').onclick=()=>{const a=parseFloat($('vd-in').value);if(isNaN(a)){$('vd-out').textContent='숫자로 입력한다.';return;}
+      const ok=Math.abs(a-this.v)<0.0051;$('vd-out').textContent=ok?('정답이다! '+fx(this.v,2)+' mm'):'다시 읽어 보자. 어미자 값을 먼저 확인한다.';if(ok){this.show=true;this.draw();}};
+    this.newq();},
+  newq(){const T=VT[this.t];const steps=Math.round(1/T.c);this.v=+(5+Math.floor(Math.random()*30)+Math.floor(Math.random()*steps)*T.c).toFixed(2);
+    this.show=false;$('vd-in').value='';$('vd-out').textContent='눈금을 읽어 입력한다.';this.draw();},
+  draw(){drawVernier(this.g,this.v,this.t,this.show);}}));
+
+/* 아베의 원리 */
+safe('abbe',()=>widget('w-abbe',{playing:false,tool:'v',pos:'out',F:6,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-ab',x=>{this.tool=x;this.draw();});group(this.box,'data-ap',x=>{this.pos=x;this.draw();});
+    slider('abbe-f',x=>{this.F=x;this.draw();});},
+  draw(){const g=this.g;g.innerHTML='';const F=this.F;
+    if(this.tool==='v'){
+      const yS=50,xF=120,W=230,hpx=this.pos==='out'?170:70,hmm=this.pos==='out'?40:15;
+      el('rect',{x:40,y:yS-16,width:480,height:32,fill:C.soft,stroke:C.navy,'stroke-width':2},g);
+      for(let i=0;i<=24;i++)el('line',{x1:60+i*19,y1:yS-16,x2:60+i*19,y2:yS-(i%5?8:2),stroke:C.navy},g);
+      txt(g,280,yS-24,'눈금(어미자) — 측정 축과 떨어져 있다',{'text-anchor':'middle','font-size':12.5,fill:C.muted});
+      el('rect',{x:xF-14,y:yS+16,width:14,height:188,fill:'#c9d4df',stroke:C.navy},g);
+      // 조 끝은 공작물에 닿은 채 버티고, 슬라이더(위쪽)만 더 밀려 들어가 조가 기운다
+      const th=F*0.9,yM=yS+16+hpx,dx=hpx*Math.sin(th*deg);
+      el('rect',{x:xF,y:yM-18,width:W,height:36,fill:C.gold,opacity:.6,stroke:C.navy},g);
+      txt(g,xF+W/2,yM+5,'공작물',{'text-anchor':'middle','font-size':12,fill:C.navy});
+      if(F>0){el('rect',{x:xF+W,y:yS+16,width:14,height:188,fill:'none',stroke:C.muted,'stroke-dasharray':'4 3'},g);
+        el('rect',{x:xF+W-8,y:yS-20,width:44,height:40,rx:4,fill:'none',stroke:C.muted,'stroke-dasharray':'4 3'},g);}
+      const gJ=el('g',{transform:`rotate(${-th} ${xF+W} ${yM})`},g);
+      el('rect',{x:xF+W,y:yS+16,width:14,height:188,fill:'#7fc3cf',stroke:C.navy},gJ);
+      el('rect',{x:xF+W-8-dx,y:yS-20,width:44,height:40,rx:4,fill:C.teal,opacity:.8},g);
+      el('line',{x1:xF+W+44,y1:yS+16,x2:xF+W+44,y2:yM,stroke:C.red,'stroke-width':1.5,'marker-end':'url(#ah)','marker-start':'url(#ahs)'},g);
+      txt(g,xF+W+52,(yS+16+yM)/2,'h = '+hmm+' mm',{'font-size':13,fill:C.red,'font-weight':700});
+      if(F>0){el('line',{x1:xF+W-dx,y1:yS+24,x2:xF+W,y2:yS+24,stroke:C.red,'stroke-width':4},g);
+        txt(g,xF+W-dx-6,yS+30,'ε',{'text-anchor':'end','font-size':14,'font-weight':700,fill:C.red});}
+      const eps=hmm*Math.tan(F*0.003*deg);
+      txt(g,40,262,'(조의 기울기는 이해를 돕기 위해 크게 과장하였다)',{'font-size':11.5,fill:C.muted});
+      $('abbe-out').textContent=F===0?'측정력이 0이면 조가 기울지 않는다.':`조가 미세하게 기울어 오차 ε ≈ h × tanθ = ${hmm} × tan(${fx(F*0.003,3)}°) ≈ ${fx(eps*1000,1)} μm 가 생긴다(조 끝은 공작물에 닿은 채 슬라이더만 더 들어가 실제보다 작게 읽힌다).`+(this.pos==='out'?' → 안쪽에서 재면 줄어든다.':' → 끝쪽보다 작다.');
+    }else{
+      const y=140;el('path',{d:'M90 70 V200 H460 V170',fill:'none',stroke:C.navy,'stroke-width':16},g);
+      el('rect',{x:82,y:y-14,width:30,height:28,fill:'#c9d4df',stroke:C.navy},g);
+      el('rect',{x:220,y:y-10,width:180,height:20,fill:'#c9d4df',stroke:C.navy},g);
+      el('rect',{x:300,y:y-22,width:120,height:44,fill:C.soft,stroke:C.navy},g);el('rect',{x:420,y:y-26,width:80,height:52,fill:C.teal},g);
+      for(let i=0;i<10;i++)el('line',{x1:305+i*12,y1:y,x2:305+i*12,y2:y-8,stroke:C.navy},g);
+      el('rect',{x:112,y:y-24,width:108,height:48,fill:C.gold,opacity:.6,stroke:C.navy},g);txt(g,166,y+5,'공작물',{'text-anchor':'middle','font-size':12,fill:C.navy});
+      el('line',{x1:60,y1:y,x2:520,y2:y,stroke:C.red,'stroke-width':1.5,'stroke-dasharray':'6 4'},g);
+      txt(g,280,y-40,'측정 축과 눈금이 한 직선 위에 있다',{'text-anchor':'middle','font-size':13,fill:C.red,'font-weight':700});
+      txt(g,280,245,'앤빌 — 스핀들 — 슬리브 눈금이 일직선',{'text-anchor':'middle','font-size':13,fill:C.muted});
+      $('abbe-out').textContent='외측 마이크로미터는 아베의 원리에 맞는 구조이다. 측정력이 있어도 기울어짐에 의한 오차가 거의 생기지 않는다(측정력은 래칫스톱으로 일정하게 한다).';
+    }}}));
+
+/* ================= 4차시 ================= */
+/* 마이크로미터 슬리브·심블 눈금: g, v(mm), ox(슬리브 시작 x), oy(기선 y), px(1 mm 픽셀), win(보이는 mm 수) */
+function drawMicScale(g,v,ox,oy,px,win){
+  const start=Math.max(0,Math.floor(v)-win+1);const edge=ox+(v-start)*px;
+  el('rect',{x:ox-10,y:oy-34,width:edge-ox+10,height:68,fill:'#eef2f6',stroke:C.navy,'stroke-width':1.5},g);
+  el('line',{x1:ox-10,y1:oy,x2:edge+4,y2:oy,stroke:C.navy,'stroke-width':1.8},g);
+  for(let mm=start;mm<=v+1e-9;mm++){const x=ox+(mm-start)*px;
+    el('line',{x1:x,y1:oy,x2:x,y2:oy-(mm%5===0?20:13),stroke:C.navy,'stroke-width':1.5},g);
+    if(mm%5===0||px>=60)txt(g,x,oy-24,''+mm,{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.navy});}
+  for(let h=start+0.5;h<=v+1e-9;h+=1){const x=ox+(h-start)*px;el('line',{x1:x,y1:oy,x2:x,y2:oy+12,stroke:C.teal,'stroke-width':1.5},g);}
+  txt(g,ox-6,oy-40,(edge-ox)>200?'슬리브: 위 1 mm · 아래 0.5 mm':'슬리브',{'font-size':12,fill:C.muted});
+  // 심블
+  const half=Math.floor(v*2+1e-9)/2;const tpos=(v-half)*100;
+  el('path',{d:`M${edge} ${oy-58} H${edge+150} V${oy+58} H${edge} Z`,fill:C.tsoft,stroke:C.teal,'stroke-width':2},g);
+  for(let j=Math.floor(tpos)-5;j<=Math.ceil(tpos)+5;j++){const y=oy-(j-tpos)*10;if(y<oy-55||y>oy+55)continue;const m=((j%50)+50)%50;
+    el('line',{x1:edge,y1:y,x2:edge+(m%5===0?22:13),y2:y,stroke:C.navy,'stroke-width':1.3},g);
+    if(m%5===0)txt(g,edge+28,y+5,''+m,{'font-size':13,'font-weight':700,fill:C.navy});}
+  txt(g,edge+75,oy+75,'심블: 50등분(0.01 mm)',{'text-anchor':'middle','font-size':12,fill:C.muted});
+  return {sleeve:half,th:Math.round(tpos),edge};
+}
+
+/* 각부 명칭 */
+safe('mparts',()=>widget('w-mparts',{playing:false,hl:'anvil',quiz:false,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-mp',x=>{this.hl=x;this.quiz=false;this.draw();});
+    $('mp-quiz').onclick=()=>{if(!this.quiz){const ks=['anvil','spindle','sleeve','thimble','ratchet','clamp','frame'];let k;do{k=ks[Math.floor(Math.random()*ks.length)];}while(k===this.hl);
+      this.hl=k;this.quiz=true;this.draw();$('mp-out').textContent='빛나는 부품의 이름은? (다시 누르면 정답)';[...this.box.querySelectorAll('[data-mp]')].forEach(b=>b.classList.remove('on'));}
+      else{this.quiz=false;this.draw();}};},
+  draw(){const g=this.g;g.innerHTML='';const H=k=>this.hl===k?C.gold:null;
+    const N={anvil:'앤빌',spindle:'스핀들',sleeve:'슬리브',thimble:'심블',ratchet:'래칫스톱',clamp:'클램프',frame:'프레임'};
+    el('path',{d:'M110 112 V250 H340 V180',fill:'none',stroke:H('frame')||C.navy,'stroke-width':26,'stroke-linejoin':'round'},g);
+    el('rect',{x:100,y:136,width:34,height:28,fill:H('anvil')||'#c9d4df',stroke:C.navy,'stroke-width':1.5},g);
+    el('rect',{x:150,y:142,width:44,height:16,fill:C.gold,opacity:.35},g);txt(g,172,132,'공작물',{'text-anchor':'middle','font-size':11,fill:C.muted});
+    el('rect',{x:194,y:139,width:150,height:22,fill:H('spindle')||'#c9d4df',stroke:C.navy,'stroke-width':1.5},g);
+    el('rect',{x:296,y:108,width:22,height:24,rx:3,fill:H('clamp')||C.teal,stroke:C.navy},g);el('line',{x1:307,y1:108,x2:330,y2:92,stroke:H('clamp')||C.teal,'stroke-width':7,'stroke-linecap':'round'},g);
+    el('rect',{x:340,y:126,width:140,height:48,fill:H('sleeve')||'#eef2f6',stroke:C.navy,'stroke-width':1.5},g);
+    el('line',{x1:340,y1:150,x2:480,y2:150,stroke:C.navy,'stroke-width':1.5},g);
+    for(let i=0;i<=12;i++)el('line',{x1:346+i*10,y1:150,x2:346+i*10,y2:150-(i%5?7:12),stroke:C.navy},g);
+    el('path',{d:'M480 122 L494 114 H570 V186 H494 L480 178 Z',fill:H('thimble')||C.tsoft,stroke:C.teal,'stroke-width':2},g);
+    for(let i=0;i<6;i++)el('line',{x1:482,y1:128+i*9,x2:492,y2:128+i*9,stroke:C.navy},g);
+    el('rect',{x:570,y:130,width:50,height:40,rx:6,fill:H('ratchet')||C.navy},g);
+    for(let i=0;i<5;i++)el('line',{x1:578+i*9,y1:132,x2:578+i*9,y2:168,stroke:'#fff',opacity:.35},g);
+    const P={anvil:[117,136],spindle:[250,139],sleeve:[410,126],thimble:[530,114],ratchet:[595,130],clamp:[318,96],frame:[225,262]};
+    if(!this.quiz){const p=P[this.hl];el('circle',{cx:p[0],cy:p[1],r:6,fill:C.red},g);
+      const lx=Math.min(560,Math.max(70,p[0])),ly=this.hl==='frame'?290:40;el('line',{x1:p[0],y1:p[1],x2:lx,y2:ly+6,stroke:C.red,'stroke-width':1.5},g);
+      txt(g,lx,ly,N[this.hl],{'text-anchor':'middle','font-size':18,'font-weight':700,fill:C.red});
+      $('mp-out').textContent=N[this.hl]+' — 그림에서 금색으로 표시된 부분이다.';}
+    else{const p=P[this.hl];el('circle',{cx:p[0],cy:p[1],r:9,fill:'none',stroke:C.red,'stroke-width':3},g);txt(g,p[0],p[1]-16,'( ㄱ )',{'text-anchor':'middle','font-size':16,'font-weight':700,fill:C.red});}
+  }}));
+
+/* 나사 원리 */
+safe('mscrew',()=>widget('w-mscrew',{u:0,target:0,
+  init(){this.g=el('g',{},this.svg);[['ms-1',1],['ms-10',10],['ms-50',50],['ms-100',100]].forEach(([id,d])=>$(id).onclick=()=>{this.target=Math.min(300,this.target+d);});
+    $('ms-0').onclick=()=>{this.target=0;this.u=0;};},
+  step(dt){const d=this.target-this.u;if(Math.abs(d)>0.01)this.u+=Math.sign(d)*Math.min(Math.abs(d),dt*40);},
+  draw(){const g=this.g;g.innerHTML='';const v=this.u/100;
+    el('rect',{x:20,y:20,width:30,height:40,fill:'#c9d4df',stroke:C.navy},g);
+    const tip=60+v*120;el('rect',{x:tip,y:30,width:460-tip,height:20,fill:'#c9d4df',stroke:C.navy},g);
+    el('line',{x1:50,y1:72,x2:tip,y2:72,stroke:C.red,'stroke-width':2,'marker-end':'url(#ah)'},g);
+    txt(g,(50+tip)/2+30,90,'스핀들 이동 '+fx(v,2)+' mm (확대 그림)',{'text-anchor':'middle','font-size':12.5,fill:C.red,'font-weight':700});
+    const R=drawMicScale(g,v+2,40,162,60,3);
+    const turns=this.u/50;
+    $('ms-out').textContent=`심블 ${Math.round(this.u)}눈금 = ${fx(turns,2)}회전 → 스핀들 이동 ${fx(v,2)} mm  (1눈금 0.01 mm · 1회전 0.5 mm)`;}}));
+
+/* 눈금 읽기 */
+safe('mread',()=>widget('w-mread',{playing:false,mode:'free',v:11.73,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-mr',x=>{this.mode=x;if(x==='drill')this.newq();else{this.show=true;this.v=+$('mr-v').value;this.draw();}});
+    slider('mr-v',x=>{if(this.mode==='free'){this.v=x;this.draw();}});
+    $('mr-new').onclick=()=>{this.mode='drill';[...this.box.querySelectorAll('[data-mr]')].forEach(b=>b.classList.toggle('on',b.dataset.mr==='drill'));this.newq();};
+    $('mr-show').onclick=()=>{this.show=true;this.draw();};
+    $('mr-chk').onclick=()=>{const a=parseFloat($('mr-in').value);if(isNaN(a)){$('mr-out').textContent='숫자로 입력한다.';return;}
+      const ok=Math.abs(a-this.v)<0.0051;if(ok){this.show=true;this.draw();}else $('mr-out').textContent='다시 읽어 보자. 슬리브 아래 0.5 mm 눈금이 보이는지 확인한다.';};
+    this.show=true;},
+  newq(){this.v=+(1+Math.floor(Math.random()*22)+Math.floor(Math.random()*100)/100).toFixed(2);this.show=false;$('mr-in').value='';this.draw();},
+  draw(){const g=this.g;g.innerHTML='';const R=drawMicScale(g,this.v,40,125,40,8);
+    if(this.show)$('mr-out').textContent=`슬리브 ${fx(R.sleeve,1)} mm + 심블 ${R.th} × 0.01 = ${fx(R.th/100,2)} mm → 측정값 ${fx(this.v,2)} mm`;
+    else $('mr-out').textContent='눈금을 읽어 답을 입력한다.';}}));
+
+/* 래칫스톱 */
+safe('ratch',()=>widget('w-ratch',{mode:'hand',F:0,Ft:12,hist:[],t:0,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-rt',x=>{this.mode=x;this.go();});$('rt-go').onclick=()=>this.go();this.go();},
+  go(){this.F=0;this.done=false;this.Ft=this.mode==='hand'?8+Math.random()*14:7;},
+  step(dt){if(this.done)return;this.F+=dt*12;if(this.F>=this.Ft){this.F=this.Ft;this.done=true;
+    const r=this.mode==='hand'?+(12-Math.floor((this.Ft-7)/5)*0.01).toFixed(2):12.00;this.hist.unshift([this.mode,r]);this.hist=this.hist.slice(0,5);}},
+  draw(){const g=this.g;g.innerHTML='';const sq=(this.F-7)*0.6;
+    el('rect',{x:30,y:60,width:30,height:60,fill:'#c9d4df',stroke:C.navy},g);
+    el('rect',{x:60+Math.max(0,sq/2),y:70,width:80-Math.max(0,sq),height:40,rx:6,fill:C.gold,opacity:.7,stroke:C.navy},g);
+    txt(g,100,96,'공작물',{'text-anchor':'middle','font-size':12,fill:C.navy});
+    el('rect',{x:140-Math.max(0,sq/2),y:78,width:150,height:24,fill:'#c9d4df',stroke:C.navy},g);
+    el('rect',{x:290,y:66,width:90,height:48,fill:C.tsoft,stroke:C.teal,'stroke-width':2},g);
+    el('rect',{x:380,y:72,width:40,height:36,rx:5,fill:this.mode==='ratchet'?C.navy:'#c9d4df',stroke:C.navy},g);
+    txt(g,400,62,this.mode==='ratchet'?'래칫스톱':'(사용 안 함)',{'text-anchor':'middle','font-size':12,fill:C.navy});
+    // 힘 막대
+    el('rect',{x:30,y:150,width:300,height:20,rx:4,fill:'#eef2f6',stroke:C.navy},g);
+    el('rect',{x:30,y:150,width:Math.min(300,this.F/22*300),height:20,rx:4,fill:this.F>7.5?C.red:C.teal},g);
+    el('line',{x1:30+7/22*300,y1:144,x2:30+7/22*300,y2:176,stroke:C.navy,'stroke-width':2,'stroke-dasharray':'4 3'},g);
+    txt(g,30+7/22*300,192,'영점 조정 때의 힘',{'text-anchor':'middle','font-size':12,fill:C.navy});
+    txt(g,340,165,'측정력 '+fx(this.F,1)+' N',{'font-size':14,'font-weight':700,fill:C.navy});
+    if(this.done&&this.mode==='ratchet')txt(g,400,135,'딸깍! 헛돈다',{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.teal});
+    txt(g,440,30,'최근 측정값',{'font-size':13,fill:C.muted});
+    this.hist.forEach((h,i)=>txt(g,440,52+i*20,fx(h[1],2)+' mm '+(h[0]==='ratchet'?'(래칫)':'(손)'),{'font-size':13.5,'font-weight':700,fill:h[0]==='ratchet'?C.teal:C.red}));
+    txt(g,30,225,'(측정력과 값의 변화는 이해를 돕기 위한 예시이다)',{'font-size':11.5,fill:C.muted});
+    $('rt-out').textContent=this.mode==='hand'?'손으로 세게 돌리면 잴 때마다 힘이 달라 공작물·측정기가 눌리는 양(후크의 법칙)이 달라진다 → 값이 흔들린다.':'래칫스톱은 정해진 힘에서 헛돌아 매번 같은 힘으로 잰다 → 값이 일정하다.';}}));
+
+/* ================= 5차시 ================= */
+/* 편심량 */
+safe('ecc',()=>widget('w-ecc',{e:1.5,phi:0,mx:-1e9,mn:1e9,
+  init(){this.g=el('g',{},this.svg);slider('ecc-e',x=>{this.e=x;this.mx=-1e9;this.mn=1e9;});},
+  step(dt){this.phi+=dt*1.2;if(this.phi>Math.PI*2){this.phi-=Math.PI*2;}},
+  draw(){const g=this.g;g.innerHTML='';const e=this.e,K=22,cx=160,cy=170,R=70;
+    const d=e*(1+Math.sin(this.phi));this.mx=Math.max(this.mx,d);this.mn=Math.min(this.mn,d);
+    const ox=cx+e*K*Math.cos(this.phi+Math.PI/2)*0,oy=cy-e*K*Math.sin(this.phi);
+    el('circle',{cx:cx,cy:cy,r:R+e*K+6,fill:'none',stroke:C.line,'stroke-dasharray':'4 4'},g);
+    el('circle',{cx:ox,cy:oy,r:R,fill:C.tsoft,stroke:C.teal,'stroke-width':3},g);
+    el('line',{x1:ox,y1:oy,x2:ox+R*Math.cos(this.phi),y2:oy-R*Math.sin(this.phi),stroke:C.teal,'stroke-width':2},g);
+    el('circle',{cx,cy,r:5,fill:C.navy},g);txt(g,cx+8,cy+18,'회전 중심',{'font-size':11.5,fill:C.navy});
+    el('circle',{cx:ox,cy:oy,r:4,fill:C.red},g);txt(g,ox+8,oy-6,'공작물 중심',{'font-size':11.5,fill:C.red});
+    const top=oy-R;el('rect',{x:cx-4,y:20,width:8,height:top-20,fill:'#5b6876'},g);el('circle',{cx,cy:top,r:5,fill:C.navy},g);
+    // 다이얼
+    const dx=420,dy=120,DR=80;el('circle',{cx:dx,cy:dy,r:DR,fill:'#fff',stroke:C.navy,'stroke-width':3},g);
+    for(let i=0;i<100;i+=2){const a=(-90+i*3.6)*deg;const L=i%10===0?14:7;el('line',{x1:dx+Math.cos(a)*(DR-3),y1:dy+Math.sin(a)*(DR-3),x2:dx+Math.cos(a)*(DR-3-L),y2:dy+Math.sin(a)*(DR-3-L),stroke:C.navy},g);
+      if(i%20===0)txt(g,dx+Math.cos(a)*(DR-28),dy+Math.sin(a)*(DR-28)+5,''+i,{'text-anchor':'middle','font-size':12,fill:C.muted});}
+    const a=(-90+(d%1)*360)*deg;el('line',{x1:dx,y1:dy,x2:dx+Math.cos(a)*(DR-16),y2:dy+Math.sin(a)*(DR-16),stroke:C.red,'stroke-width':4,'stroke-linecap':'round'},g);
+    el('circle',{cx:dx,cy:dy+34,r:14,fill:'#fff',stroke:C.navy},g);const b=(-90+Math.floor(d)*36)*deg;el('line',{x1:dx,y1:dy+34,x2:dx+Math.cos(b)*11,y2:dy+34+Math.sin(b)*11,stroke:C.navy,'stroke-width':2.5},g);
+    el('circle',{cx:dx,cy:dy,r:5,fill:C.navy},g);txt(g,dx,dy+DR+18,'1눈금 0.01 mm · 작은 바늘 = mm',{'text-anchor':'middle','font-size':12,fill:C.muted});
+    txt(g,345,240,'지금 '+fx(d,2)+' mm',{'font-size':14,'font-weight':700,fill:C.navy});txt(g,345,262,'최대 '+fx(this.mx,2)+' · 최소 '+fx(Math.max(0,this.mn),2),{'font-size':13,fill:C.muted});
+    $('ecc-ev').textContent='= '+fx(e,2)+' mm';
+    const full=this.mx-this.mn;$('ecc-out').textContent=`전체 움직임 ${fx(full,2)} mm → 편심량 = ${fx(full,2)} ÷ 2 = ${fx(full/2,2)} mm` + (Math.abs(full/2-e)<0.03?'  (설정값과 일치)':'  (한 바퀴를 다 돌면 정확해진다)');}}));
+
+/* 한계게이지 */
+safe('limit',()=>widget('w-limit',{playing:false,d:20.010,
+  init(){this.g=el('g',{},this.svg);slider('lim-d',x=>{this.d=x;this.draw();});},
+  draw(){const g=this.g;g.innerHTML='';const d=this.d,lo=20.000,hi=20.021;const W=v=>90+(v-19.98)*2500;
+    const scene=(x0,pin,lab,col)=>{const hw=W(d)/2,pw=W(pin)/2;const enter=d>=pin;
+      el('rect',{x:x0-130,y:150,width:130-hw,height:90,fill:'#c9d4df',stroke:C.navy},g);el('rect',{x:x0+hw,y:150,width:130-hw,height:90,fill:'#c9d4df',stroke:C.navy},g);
+      const py=enter?110:62;el('rect',{x:x0-pw,y:py,width:pw*2,height:80,rx:4,fill:col,stroke:C.navy,'stroke-width':1.5},g);
+      el('rect',{x:x0-14,y:py-50,width:28,height:50,fill:'#5b6876'},g);
+      txt(g,x0,24,lab+' Ø'+fx(pin,3),{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.navy});
+      txt(g,x0,46,enter?'들어간다':'들어가지 않는다',{'text-anchor':'middle','font-size':14,'font-weight':700,fill:enter?C.teal:C.red});return enter;};
+    const go=scene(140,lo,'통과측(GO)',C.teal),ng=scene(420,hi,'정지측(NO GO)',C.red);
+    txt(g,280,258,'(지름 차이는 이해를 위해 크게 과장하였다)',{'text-anchor':'middle','font-size':11.5,fill:C.muted});
+    $('lim-dv').textContent='Ø'+fx(d,3);
+    $('lim-out').textContent=go&&!ng?'통과측은 들어가고 정지측은 들어가지 않는다 → 합격':(!go?'통과측도 들어가지 않는다 → 구멍이 작다, 불합격(더 깎으면 살릴 수 있다)':'정지측까지 들어간다 → 구멍이 크다, 불합격(살릴 수 없다)');}}));
+
+/* 사인바 */
+safe('sine',()=>widget('w-sine',{playing:false,L:200,a:30,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-sl',x=>{this.L=+x;this.draw();});slider('sine-a',x=>{this.a=x;this.draw();});},
+  draw(){const g=this.g;g.innerHTML='';const L=230,a=this.a*deg,x0=90,y0=215,r=12;
+    el('rect',{x:20,y:y0+r,width:520,height:14,fill:'#5b6876'},g);txt(g,280,y0+r+11,'정반',{'text-anchor':'middle','font-size':10,fill:'#fff'});
+    const x1=x0+L*Math.cos(a),y1=y0-L*Math.sin(a);const H=this.L*Math.sin(a);
+    el('rect',{x:x1-18,y:y1+r,width:36,height:y0-y1,fill:C.gold,stroke:C.navy},g);
+    const n=Math.max(1,Math.ceil(H/40));for(let i=1;i<n;i++)el('line',{x1:x1-18,y1:y0+r-(y0-y1)*i/n,x2:x1+18,y2:y0+r-(y0-y1)*i/n,stroke:C.navy},g);
+    const nx=-Math.sin(a),ny=-Math.cos(a);
+    el('line',{x1:x0+nx*r,y1:y0+ny*r,x2:x1+nx*r,y2:y1+ny*r,stroke:C.navy,'stroke-width':14,'stroke-linecap':'round'},g);
+    el('circle',{cx:x0,cy:y0,r,fill:'#c9d4df',stroke:C.navy,'stroke-width':2},g);el('circle',{cx:x1,cy:y1,r,fill:'#c9d4df',stroke:C.navy,'stroke-width':2},g);
+    el('path',{d:`M${x0+60} ${y0} A60 60 0 0 0 ${x0+60*Math.cos(a)} ${y0-60*Math.sin(a)}`,fill:'none',stroke:C.red,'stroke-width':2},g);
+    txt(g,x0+70,y0-10,'θ = '+this.a+'°',{'font-size':14,'font-weight':700,fill:C.red});
+    txt(g,(x0+x1)/2-40,(y0+y1)/2-24,'L = '+this.L+' mm',{'font-size':14,'font-weight':700,fill:C.navy});
+    txt(g,x1+24,(y0+y1)/2+r,'H = '+fx(H,2)+' mm',{'font-size':14,'font-weight':700,fill:'#9a7400'});
+    $('sine-out').textContent=`H = L × sinθ = ${this.L} × sin${this.a}° = ${fx(H,2)} mm`+(this.a>45?'  ⚠ 45°를 넘으면 오차가 커진다':'');}}));
+
+/* ================= 6차시 ================= */
+/* 열팽창 */
+safe('therm',()=>widget('w-therm',{playing:false,L:100,T:28,
+  init(){this.g=el('g',{},this.svg);group(this.box,'data-tl',x=>{this.L=+x;this.draw();});slider('th-t',x=>{this.T=x;this.draw();});},
+  draw(){const g=this.g;g.innerHTML='';const a=11.5e-6,dT=this.T-20,dL=a*this.L*dT*1000;// μm
+    const w0=this.L===25?110:(this.L===100?260:360),x0=60,y0=60;const ex=dL*6;
+    el('rect',{x:x0,y:y0,width:w0,height:60,fill:'#c9d4df',stroke:C.navy,'stroke-width':2},g);
+    if(ex>0)el('rect',{x:x0+w0,y:y0,width:ex,height:60,fill:C.red,opacity:.55},g);
+    else if(ex<0)el('rect',{x:x0+w0+ex,y:y0,width:-ex,height:60,fill:C.teal,opacity:.45},g);
+    txt(g,x0+w0/2,y0+36,this.L+' mm (20 ℃ 기준)',{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.navy});
+    el('line',{x1:x0+w0,y1:y0-14,x2:x0+w0,y2:y0+74,stroke:C.navy,'stroke-dasharray':'4 3'},g);
+    // 온도계
+    const tx=500,ty=40;el('rect',{x:tx-8,y:ty,width:16,height:120,rx:8,fill:'#fff',stroke:C.navy},g);el('circle',{cx:tx,cy:ty+128,r:14,fill:C.red},g);
+    const h=clamp((this.T-15)/20,0,1)*110;el('rect',{x:tx-4,y:ty+118-h,width:8,height:h+10,fill:C.red},g);
+    txt(g,tx,ty+165,fx(this.T,1)+' ℃',{'text-anchor':'middle','font-size':14,'font-weight':700,fill:C.red});
+    // 비교 막대
+    const bar=(y,lab,um,col)=>{el('rect',{x:60,y,width:Math.min(360,Math.abs(um)*12),height:18,fill:col},g);txt(g,60+Math.min(360,Math.abs(um)*12)+8,y+14,lab+' '+fx(Math.abs(um),1)+' μm',{'font-size':13,fill:C.navy,'font-weight':700});};
+    bar(150,'늘어난 길이',dL,C.red);bar(178,'마이크로미터 1눈금',10,C.teal);bar(206,'버니어 0.02 mm',20,C.gold);
+    txt(g,60,142,'(그림의 늘어난 부분은 크게 과장하였다)',{'font-size':11.5,fill:C.muted});
+    $('th-out').textContent=`ΔL = 11.5×10⁻⁶ × ${this.L} × (${fx(this.T,1)} − 20) = ${dL>=0?'+':''}${fx(dL,1)} μm = ${fx(dL/1000,4)} mm`+(Math.abs(dL)>=10?'  → 마이크로미터 1눈금보다 크다!':'');}}));
+
+/* 베셀점: 균일 하중 보의 처짐을 수치 적분 */
+safe('bessel',()=>widget('w-bessel',{playing:false,a:0.05,
+  calc(a){const N=240,dx=1/(N-1);const x=[],M=[];for(let i=0;i<N;i++){const xi=i*dx;x.push(xi);M.push(-(xi*xi)/2+0.5*Math.max(xi-a,0)+0.5*Math.max(xi-(1-a),0));}
+    const th=[],y=[];let c=0;M.forEach(m=>{c+=m*dx;th.push(c);});c=0;th.forEach(t=>{c+=t*dx;y.push(c);});
+    const i1=Math.round(a/dx),i2=Math.round((1-a)/dx);const k=(y[i2]-y[i1])/(x[i2]-x[i1]);const yy=y.map((v,i)=>v-(y[i1]+k*(x[i]-x[i1])));
+    let s=0;for(let i=0;i<N-1;i++){const p=(yy[i+1]-yy[i])/dx;s+=p*p*dx/2;}return {x,y:yy,s};},
+  init(){this.g=el('g',{},this.svg);this.curve=[];for(let a=0.02;a<=0.401;a+=0.005)this.curve.push([a,this.calc(a).s]);
+    this.smax=Math.max(...this.curve.map(c=>c[1]));
+    slider('bs-a',x=>{this.a=x;this.draw();});$('bs-b').onclick=()=>{this.a=0.22;$('bs-a').value=0.22;this.draw();};$('bs-y').onclick=()=>{this.a=0.21;$('bs-a').value=0.21;this.draw();};},
+  draw(){const g=this.g;g.innerHTML='';const R=this.calc(this.a);const X0=40,W=480,Y0=50;
+    const ys=R.y.map(Math.abs);const amp=Math.max(...ys)||1;const K=40/Math.max(amp,0.004);
+    el('path',{d:pathOf(R.x.map((v,i)=>[X0+v*W,Y0+R.y[i]*K*-1])),fill:'none',stroke:C.navy,'stroke-width':10,'stroke-linecap':'round'},g);
+    [this.a,1-this.a].forEach(p=>{el('polygon',{points:`${X0+p*W},${Y0+8} ${X0+p*W-10},${Y0+28} ${X0+p*W+10},${Y0+28}`,fill:C.teal},g);});
+    txt(g,X0+this.a*W,Y0+44,'a = '+fx(this.a,3)+' L',{'text-anchor':'middle','font-size':12.5,fill:C.teal,'font-weight':700});
+    // 그래프
+    const gx=60,gy=210,gw=440,gh=90;axes(g,gx,gy,gw,gh,'a/L','길이 변화');
+    el('path',{d:pathOf(this.curve.map(c=>[gx+(c[0]-0.02)/0.38*gw,gy-Math.min(1,c[1]/this.smax*6)*gh])),fill:'none',stroke:C.teal,'stroke-width':2.5},g);
+    const bx=gx+(0.2203-0.02)/0.38*gw;el('line',{x1:bx,y1:gy,x2:bx,y2:gy-gh,stroke:C.gold,'stroke-width':2,'stroke-dasharray':'4 3'},g);txt(g,bx+4,gy-gh+12,'베셀점 0.2203',{'font-size':12,fill:'#9a7400','font-weight':700});
+    const cx=gx+(this.a-0.02)/0.38*gw,cy=gy-Math.min(1,R.s/this.smax*6)*gh;el('circle',{cx,cy,r:6,fill:C.red},g);
+    $('bs-out').textContent=`지지점 a = ${fx(this.a,3)} L → 길이 변화 지수 ${fx(R.s/this.smax*100,1)} (양 끝 가까이 받칠 때 = 100)`+(Math.abs(this.a-0.22)<0.006?'  ← 가장 작다(베셀점)':'');}}));
+
+/* 시작 */
+buildToc();
+let start=0;try{const h=parseInt((location.hash||'').replace('#p',''),10);if(h>0)start=h-1;}catch(e){}
+document.body.classList.toggle('teacher',teacher);
+show(start);fit();
+(function tick(ts){const dt=Math.min(0.05,(ts-last)/1000);last=ts;
+  widgets.forEach(w=>{if(w.page.classList.contains('on')&&w.playing){w.step(dt);w.draw();}});
+  minis.forEach(m=>{if(m.page.classList.contains('on'))m.step(dt);});requestAnimationFrame(tick);})(performance.now());
+/* 점검용: ?click=선택자1|선택자2 → 불러온 뒤 차례로 누른다 */
+try{const q=new URLSearchParams(location.search).get('click');if(q)setTimeout(()=>q.split('|').forEach((s,i)=>setTimeout(()=>{const e=document.querySelector(s);if(e)e.click();},i*50)),50);}catch(e){}
+
+</script>
+</body>
+</html>
